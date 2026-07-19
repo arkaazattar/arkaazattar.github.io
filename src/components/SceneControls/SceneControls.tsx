@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import {
   formatSceneDate,
   formatSceneTime,
@@ -38,46 +39,90 @@ export default function SceneControls({
   onWeatherChange,
   onSeasonChange,
 }: SceneControlsProps) {
-  const isManual = mode === 'manual'
-  const canScrubTime = mode !== 'live'
+  const [showMoonLabel, setShowMoonLabel] = useState(false)
+  const dateLabel = showMoonLabel ? moonPhase.label : formatSceneDate(dayOffset)
+  const timeLabel = formatSceneTime(timeMinutes)
+
+  const cycleSeason = () => {
+    const currentIndex = seasonOptions.indexOf(season)
+    const nextSeason = seasonOptions[(currentIndex + 1) % seasonOptions.length]
+
+    onSeasonChange(nextSeason)
+  }
+
+  const cycleWeather = () => {
+    const currentIndex = weatherOptions.indexOf(weather)
+    const nextWeather = weatherOptions[(currentIndex + 1) % weatherOptions.length]
+
+    onWeatherChange(nextWeather)
+  }
 
   return (
     <form className="scene-controls" aria-label="Scene controls">
-      <fieldset className="control-group">
-        <legend>Scene</legend>
-        <label>
-          <input
-            checked={mode === 'live'}
-            name="scene-mode"
-            onChange={() => onModeChange('live')}
-            type="radio"
-          />
-          Live
-        </label>
-        <label>
-          <input
-            checked={mode === 'today'}
-            name="scene-mode"
-            onChange={() => onModeChange('today')}
-            type="radio"
-          />
-          Today
-        </label>
-        <label>
-          <input
-            checked={isManual}
-            name="scene-mode"
-            onChange={() => onModeChange('manual')}
-            type="radio"
-          />
-          Manual
-        </label>
-      </fieldset>
-
       <label className="control-field">
-        <span>Time {formatSceneTime(timeMinutes)}</span>
+        <span className="time-slider-text">
+          <button
+            type="button"
+            className="scene-control-text-button"
+            disabled={mode === 'live'}
+            onClick={() => onModeChange('live')}
+          >
+            live
+          </button>
+          <span className="scene-control-separator" aria-hidden="true">
+            •
+          </span>
+          <button
+            type="button"
+            className="scene-control-text-button"
+            onClick={cycleSeason}
+          >
+            {season}
+          </button>
+          <span className="scene-control-separator" aria-hidden="true">
+            •
+          </span>
+          <button
+            type="button"
+            className="scene-control-text-button"
+            onClick={cycleWeather}
+          >
+            {weather}
+          </button>
+          <span className="scene-control-separator" aria-hidden="true">
+            •
+          </span>
+          <button
+            type="button"
+            className="date-nav-button"
+            aria-label="Previous day"
+            onClick={() => onDayOffsetChange(dayOffset - 1)}
+          >
+            ←
+          </button>
+          <button
+            type="button"
+            className="date-toggle-button"
+            onClick={() => setShowMoonLabel((current) => !current)}
+          >
+            {dateLabel}
+          </button>
+          <button
+            type="button"
+            className="date-nav-button"
+            aria-label="Next day"
+            onClick={() => onDayOffsetChange(dayOffset + 1)}
+          >
+            →
+          </button>
+          <span className="scene-control-separator" aria-hidden="true">
+            •
+          </span>
+          <span className="time-display">{timeLabel}</span>
+        </span>
+        
         <input
-          disabled={!canScrubTime}
+          className="time-slider"
           max={1439}
           min={0}
           onChange={(event) => onTimeChange(Number(event.target.value))}
@@ -85,50 +130,6 @@ export default function SceneControls({
           type="range"
           value={timeMinutes}
         />
-      </label>
-
-      <label className="control-field">
-        <span>
-          Date {formatSceneDate(dayOffset)} ({moonPhase.label})
-        </span>
-        <input
-          max={15}
-          min={-15}
-          onChange={(event) => onDayOffsetChange(Number(event.target.value))}
-          step={1}
-          type="range"
-          value={dayOffset}
-        />
-      </label>
-
-      <label className="control-field">
-        <span>Weather {mode === 'today' ? '(today)' : ''}</span>
-        <select
-          disabled={!isManual}
-          onChange={(event) => onWeatherChange(event.target.value as SceneWeather)}
-          value={weather}
-        >
-          {weatherOptions.map((option) => (
-            <option key={option} value={option}>
-              {option}
-            </option>
-          ))}
-        </select>
-      </label>
-
-      <label className="control-field">
-        <span>Season {mode === 'today' ? '(today)' : ''}</span>
-        <select
-          disabled={!isManual}
-          onChange={(event) => onSeasonChange(event.target.value as SceneSeason)}
-          value={season}
-        >
-          {seasonOptions.map((option) => (
-            <option key={option} value={option}>
-              {option}
-            </option>
-          ))}
-        </select>
       </label>
     </form>
   )

@@ -124,6 +124,7 @@ function App() {
         }
         onBuildingSelect={handleBuildingSelect}
         season={season}
+        timeMinutes={timeMinutes}
         skyOverlay={
           <StarsOverlay
             solarTimes={solarTimes}

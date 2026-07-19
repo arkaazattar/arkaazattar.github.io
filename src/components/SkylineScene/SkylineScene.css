@@ -28,6 +28,7 @@
 }
 
 .skyline-image,
+.cloud-layer,
 .skyline-lighting,
 .water-ripple-canvas,
 .building-map {
@@ -41,7 +42,48 @@
 .skyline-image {
   object-fit: contain;
   user-select: none;
-  z-index: 0;
+  z-index: 1;
+}
+
+.cloud-layer {
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.skyline-cloud {
+  animation: cloud-cross var(--cloud-travel-duration) linear infinite;
+  height: auto;
+  image-rendering: auto;
+  left: var(--cloud-start-left);
+  opacity: var(--cloud-opacity);
+  position: absolute;
+  top: var(--cloud-top);
+  transform: translateY(-50%);
+  user-select: none;
+  width: var(--cloud-width);
+}
+
+.cloud-reflection-layer {
+  inset: 0;
+  -webkit-mask-image: url('/water.svg');
+  -webkit-mask-mode: alpha;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  mask-image: url('/water.svg');
+  mask-mode: alpha;
+  mask-repeat: no-repeat;
+  mask-size: 100% 100%;
+  pointer-events: none;
+  position: absolute;
+}
+
+.skyline-cloud-reflection {
+  animation-name: cloud-reflection-cross;
+  filter: blur(0.45px);
+  mix-blend-mode: screen;
+  opacity: var(--cloud-reflection-opacity);
+  top: var(--cloud-reflection-top);
 }
 
 .skyline-lighting {
@@ -126,4 +168,52 @@
   fill: color-mix(in srgb, var(--building-outline-color) 16%, transparent);
   stroke-opacity: 1;
   stroke-width: 2.6;
+}
+
+@keyframes cloud-cross {
+  0% {
+    left: var(--cloud-start-left);
+    transform: translateY(-50%);
+  }
+
+  24% {
+    transform: translateY(calc(-50% - var(--cloud-bob-offset)));
+  }
+
+  50% {
+    transform: translateY(-50%);
+  }
+
+  76% {
+    transform: translateY(calc(-50% + var(--cloud-bob-offset)));
+  }
+
+  100% {
+    left: var(--cloud-end-left);
+    transform: translateY(-50%);
+  }
+}
+
+@keyframes cloud-reflection-cross {
+  0% {
+    left: var(--cloud-start-left);
+    transform: translateY(-50%) scale(1, -0.3);
+  }
+
+  24% {
+    transform: translateY(calc(-50% + var(--cloud-reflection-bob-offset))) scale(1, -0.3);
+  }
+
+  50% {
+    transform: translateY(-50%) scale(1, -0.3);
+  }
+
+  76% {
+    transform: translateY(calc(-50% - var(--cloud-reflection-bob-offset))) scale(1, -0.3);
+  }
+
+  100% {
+    left: var(--cloud-end-left);
+    transform: translateY(-50%) scale(1, -0.3);
+  }
 }

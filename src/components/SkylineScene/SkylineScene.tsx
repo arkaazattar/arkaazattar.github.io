@@ -1,10 +1,11 @@
-import { useCallback, useEffect, useRef, type ReactNode } from 'react'
+import { useCallback, useEffect, useRef, type CSSProperties, type ReactNode } from 'react'
 import {
   buildingRegions,
   SKYLINE_IMAGE,
   WINTER_SKYLINE_IMAGE,
   type BuildingRegion,
 } from '../../data/buildings'
+import { skylineClouds } from '../../data/clouds'
 import type { SceneSeason, SceneWeather } from '../../data/scene'
 import './SkylineScene.css'
 
@@ -14,11 +15,16 @@ type WaterRipple = {
   y: number
 }
 
+type SceneCloud = (typeof skylineClouds)[number] & {
+  instanceId: string
+}
+
 type SkylineSceneProps = {
   celestialOverlay?: ReactNode
   onBuildingSelect?: (building: BuildingRegion) => void
   season: SceneSeason
   skyOverlay?: ReactNode
+  timeMinutes: number
   weather: SceneWeather
 }
 
@@ -30,16 +36,22 @@ const rippleSpawnIntervalMs = 80
 const rippleSpawnDistance = 0.035
 const ripplePixelStep = 4
 const rainRippleIntervalMs = 25
+const cloudReflectionCompression = 0.3
+const rainyCloudMultiplier = 2
+const rainyCloudTopOffsets = [0, -4, 5, -8]
+const rainyCloudScaleMultipliers = [1, 0.72, 0.86, 0.58]
 
 export default function SkylineScene({
   celestialOverlay,
   onBuildingSelect,
   season,
   skyOverlay,
+  timeMinutes,
   weather,
 }: SkylineSceneProps) {
   const skylineImage = season === 'winter' ? WINTER_SKYLINE_IMAGE : SKYLINE_IMAGE
   const shouldRenderRipples = season !== 'winter'
+  const sceneClouds = getSceneClouds(weather)
   const frameRef = useRef<HTMLDivElement>(null)
   const rippleCanvasRef = useRef<HTMLCanvasElement>(null)
   const animationRef = useRef(0)
@@ -222,6 +234,40 @@ export default function SkylineScene({
     return waterMaskData.data[alphaIndex] > waterMaskAlphaThreshold
   }
 
+  function getCloudStyle(cloud: SceneCloud) {
+    const cloudWidth = (cloud.width / skylineImage.width) * cloud.scale * 100
+
+    return {
+      '--cloud-bob-offset': `${cloud.bobOffset}%`,
+      '--cloud-end-left': '108%',
+      '--cloud-opacity': cloud.opacity,
+      '--cloud-reflection-bob-offset': `${cloud.bobOffset * 0.4}%`,
+      '--cloud-reflection-opacity': cloud.reflectionOpacity,
+      '--cloud-start-left': `-${cloudWidth + 8}%`,
+      '--cloud-top': `${cloud.top}%`,
+      '--cloud-travel-duration': `${cloud.travelDurationSeconds}s`,
+      '--cloud-width': `${cloudWidth}%`,
+      animationDelay: `${getCloudAnimationDelay(cloud)}s`,
+    } as CSSProperties
+  }
+
+  function getCloudReflectionStyle(cloud: SceneCloud) {
+    const waterline = waterlineProgress * 100
+    const reflectionTop = waterline + (waterline - cloud.top) * cloudReflectionCompression
+
+    return {
+      ...getCloudStyle(cloud),
+      '--cloud-reflection-top': `${reflectionTop}%`,
+    } as CSSProperties
+  }
+
+  function getCloudAnimationDelay(cloud: SceneCloud) {
+    const sceneSeconds = timeMinutes * 60 + cloud.loopOffsetSeconds
+    const loopProgress = sceneSeconds % cloud.travelDurationSeconds
+
+    return -loopProgress
+  }
+
   useEffect(() => {
     let isActive = true
     const image = new Image()
@@ -351,6 +397,34 @@ export default function SkylineScene({
       }}
     >
       <div className="skyline-frame" ref={frameRef}>
+        <div className="cloud-layer" aria-hidden="true">
+          {sceneClouds.map((cloud) => (
+            <img
+              className="skyline-cloud"
+              src={cloud.src}
+              alt=""
+              draggable="false"
+              key={cloud.instanceId}
+              width={cloud.width}
+              height={cloud.height}
+              style={getCloudStyle(cloud)}
+            />
+          ))}
+          <div className="cloud-reflection-layer">
+            {sceneClouds.map((cloud) => (
+              <img
+                className="skyline-cloud skyline-cloud-reflection"
+                src={cloud.src}
+                alt=""
+                draggable="false"
+                key={`${cloud.instanceId}-reflection`}
+                width={cloud.width}
+                height={cloud.height}
+                style={getCloudReflectionStyle(cloud)}
+              />
+            ))}
+          </div>
+        </div>
         <img
           className="skyline-image"
           src={skylineImage.src}
@@ -360,6 +434,7 @@ export default function SkylineScene({
           height={skylineImage.height}
         />
         {skyOverlay}
+
         {celestialOverlay}
         <div className="skyline-lighting" aria-hidden="true" />
         {shouldRenderRipples && (
@@ -389,5 +464,27 @@ export default function SkylineScene({
         </svg>
       </div>
     </section>
+  )
+}
+
+function getSceneClouds(weather: SceneWeather): SceneCloud[] {
+  const multiplier = weather === 'rain' || weather === 'thunder' ? rainyCloudMultiplier : 1
+
+  return Array.from({ length: multiplier }).flatMap((_, groupIndex) =>
+    skylineClouds.map((cloud, cloudIndex) => ({
+      ...cloud,
+      instanceId: `${cloud.id}-${groupIndex}`,
+      bobOffset: cloud.bobOffset * (1 - groupIndex * 0.08),
+      loopOffsetSeconds:
+        cloud.loopOffsetSeconds + groupIndex * 53 + cloudIndex * 11,
+      opacity: groupIndex === 0 ? cloud.opacity : Math.max(cloud.opacity - 0.16, 0.64),
+      reflectionOpacity:
+        groupIndex === 0
+          ? cloud.reflectionOpacity
+          : Math.max(cloud.reflectionOpacity - 0.04, 0.05),
+      scale: cloud.scale * rainyCloudScaleMultipliers[groupIndex],
+      top: Math.min(Math.max(cloud.top + rainyCloudTopOffsets[groupIndex], 5), 46),
+      travelDurationSeconds: cloud.travelDurationSeconds * (1 + groupIndex * 0.12),
+    })),
   )
 }
