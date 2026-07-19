@@ -1,0 +1,57 @@
+.scene-controls {
+  background: rgba(255, 255, 255, 0.86);
+  border: 1px solid rgba(0, 0, 0, 0.14);
+  color: #111827;
+  display: grid;
+  gap: 0.75rem;
+  left: 1rem;
+  max-width: calc(100vw - 2rem);
+  padding: 0.85rem;
+  position: fixed;
+  top: 1rem;
+  width: 18rem;
+  z-index: 5;
+}
+
+.control-group {
+  border: 0;
+  display: flex;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+}
+
+.control-group legend,
+.control-field span {
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.control-group label {
+  align-items: center;
+  display: flex;
+  font-size: 0.88rem;
+  gap: 0.3rem;
+}
+
+.control-field {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.control-field input,
+.control-field select {
+  font: inherit;
+}
+
+.control-field select {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.22);
+  padding: 0.32rem 0.4rem;
+}
+
+.control-field input:disabled,
+.control-field select:disabled {
+  cursor: not-allowed;
+  opacity: 0.52;
+}

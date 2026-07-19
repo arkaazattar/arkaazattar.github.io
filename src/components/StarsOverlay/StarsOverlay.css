@@ -1,0 +1,94 @@
+.stars-overlay,
+.stars-reflection {
+  background-image:
+    radial-gradient(circle, rgba(255, 255, 255, 0.9) 0 1px, transparent 1.5px),
+    radial-gradient(circle, rgba(186, 218, 255, 0.72) 0 1px, transparent 1.5px),
+    radial-gradient(circle, rgba(255, 244, 202, 0.72) 0 1px, transparent 1.5px);
+  background-position:
+    7% 18%,
+    31% 10%,
+    61% 23%;
+  background-size:
+    13rem 9rem,
+    18rem 12rem,
+    23rem 15rem;
+  height: 100%;
+  inset: 0;
+  mix-blend-mode: screen;
+  pointer-events: none;
+  position: absolute;
+  transition: opacity 700ms ease;
+  z-index: 1;
+}
+
+.stars-overlay {
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 calc(var(--waterline, 76%) - 28%),
+    transparent calc(var(--waterline, 76%) - 7%)
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 calc(var(--waterline, 76%) - 28%),
+    transparent calc(var(--waterline, 76%) - 7%)
+  );
+  opacity: calc(var(--stars-opacity) * 0.9);
+}
+
+.stars-reflection {
+  -webkit-mask-image: url('/water.svg');
+  -webkit-mask-mode: alpha;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  background-position:
+    7% 82%,
+    31% 90%,
+    61% 77%;
+  filter: blur(0.2px);
+  mask-image: url('/water.svg');
+  mask-mode: alpha;
+  mask-repeat: no-repeat;
+  mask-size: 100% 100%;
+  opacity: calc(var(--stars-opacity) * 0.22);
+}
+
+.stars-overlay::before,
+.stars-reflection::before {
+  content: '';
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+}
+
+.stars-overlay::before,
+.stars-reflection::before {
+  animation: stars-twinkle 4.8s ease-in-out infinite alternate;
+  background-image:
+    radial-gradient(circle, rgba(255, 255, 255, 0.82) 0 1px, transparent 1.5px),
+    radial-gradient(circle, rgba(205, 229, 255, 0.76) 0 1px, transparent 1.5px);
+  background-position:
+    18% 30%,
+    76% 15%;
+  background-size:
+    16rem 11rem,
+    21rem 14rem;
+}
+
+.stars-reflection::before {
+  background-position:
+    18% 70%,
+    76% 85%;
+  opacity: 0.66;
+}
+
+@keyframes stars-twinkle {
+  from {
+    opacity: 0.46;
+  }
+
+  to {
+    opacity: 0.88;
+  }
+}

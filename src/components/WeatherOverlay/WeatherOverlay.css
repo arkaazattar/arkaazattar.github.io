@@ -1,0 +1,120 @@
+.weather-overlay {
+  inset: 0;
+  pointer-events: none;
+  position: fixed;
+  z-index: 3;
+}
+
+.weather-overlay-rain,
+.weather-overlay-thunder,
+.weather-overlay-snow {
+  overflow: hidden;
+}
+
+.weather-rainfall-plane {
+  inset: -24vh -18vw;
+  position: absolute;
+  transform: rotate(var(--rain-angle));
+  transform-origin: center;
+}
+
+.weather-rainfall-plane > div {
+  height: 100%;
+  width: 100%;
+}
+
+.weather-rainfall-plane * {
+  animation-duration: var(--rain-speed) !important;
+  -moz-animation-duration: var(--rain-speed) !important;
+  -webkit-animation-duration: var(--rain-speed) !important;
+}
+
+.weather-overlay-fog {
+  background:
+    linear-gradient(180deg, transparent 0 22%, rgba(236, 242, 244, 0.2) 48%, transparent 72%),
+    linear-gradient(90deg, transparent, rgba(236, 242, 244, 0.28), transparent);
+}
+
+.weather-lightning {
+  animation: lightning-flash 7.5s linear infinite;
+  background: rgba(225, 240, 255, 0.92);
+  inset: 0;
+  mix-blend-mode: screen;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+}
+
+.weather-overlay-thunder::after {
+  animation: storm-dim 7.5s linear infinite;
+  background: rgba(8, 12, 20, 0.16);
+  content: '';
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+}
+
+@keyframes rain-fall {
+  from {
+    background-position: 0 0;
+  }
+
+  to {
+    background-position: -32px 120px;
+  }
+}
+
+@keyframes snow-fall {
+  from {
+    background-position:
+      0 -100px,
+      36px -48px;
+  }
+
+  to {
+    background-position:
+      0 100vh,
+      36px calc(100vh + 48px);
+  }
+}
+
+@keyframes lightning-flash {
+  0%,
+  70%,
+  73%,
+  76%,
+  100% {
+    opacity: 0;
+  }
+
+  71% {
+    opacity: 0.95;
+  }
+
+  72% {
+    opacity: 0.18;
+  }
+
+  74% {
+    opacity: 0.72;
+  }
+
+  75% {
+    opacity: 0.08;
+  }
+}
+
+@keyframes storm-dim {
+  0%,
+  68%,
+  72%,
+  76%,
+  100% {
+    opacity: 1;
+  }
+
+  71%,
+  74% {
+    opacity: 0;
+  }
+}

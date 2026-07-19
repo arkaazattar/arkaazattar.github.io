@@ -1,0 +1,129 @@
+.skyline-map {
+  align-items: center;
+  display: flex;
+  height: 100svh;
+  justify-content: center;
+  overflow: hidden;
+  touch-action: none;
+  width: 100vw;
+}
+
+.skyline-frame {
+  --parallax-x: 0px;
+  --parallax-y: 0px;
+  --parallax-origin-x: 50%;
+  --parallax-origin-y: 50%;
+  --scene-zoom: 1.01;
+
+  aspect-ratio: 3172 / 1344;
+  height: max(100svh, calc(100vw * 1344 / 3172));
+  position: relative;
+  transform: translate3d(var(--parallax-x), var(--parallax-y), 0) scale(var(--scene-zoom));
+  transform-origin: var(--parallax-origin-x) var(--parallax-origin-y);
+  transition:
+    transform 80ms ease-out,
+    transform-origin 80ms ease-out;
+  width: max(100vw, calc(100svh * 3172 / 1344));
+  will-change: transform;
+}
+
+.skyline-image,
+.skyline-lighting,
+.water-ripple-canvas,
+.building-map {
+  display: block;
+  height: 100%;
+  inset: 0;
+  position: absolute;
+  width: 100%;
+}
+
+.skyline-image {
+  object-fit: contain;
+  user-select: none;
+  z-index: 0;
+}
+
+.skyline-lighting {
+  background: var(--scene-lighting-color);
+  mix-blend-mode: multiply;
+  opacity: var(--scene-lighting-opacity);
+  pointer-events: none;
+  transition:
+    background-color 600ms ease,
+    opacity 600ms ease;
+  z-index: 2;
+}
+
+.water-ripple-canvas {
+  -webkit-mask-image: url('/water.svg');
+  -webkit-mask-mode: alpha;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  mask-image: url('/water.svg');
+  mask-mode: alpha;
+  mask-repeat: no-repeat;
+  mask-size: 100% 100%;
+  image-rendering: pixelated;
+  mix-blend-mode: screen;
+  opacity: 0.78;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.building-map {
+  overflow: visible;
+  z-index: 4;
+}
+
+.building-hit-link {
+  cursor: pointer;
+  outline: none;
+}
+
+.building-hit-area,
+.building-outline {
+  fill: transparent;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.building-hit-area {
+  pointer-events: all;
+  stroke: transparent;
+  stroke-width: 12;
+}
+
+.building-outline {
+  pointer-events: none;
+  transition:
+    fill 140ms ease,
+    stroke-opacity 140ms ease,
+    stroke-width 140ms ease;
+}
+
+.building-outline-backdrop {
+  stroke: rgba(4, 9, 18, 0.92);
+  stroke-width: 4;
+}
+
+.building-outline-accent {
+  filter:
+    drop-shadow(0 0 2px rgba(0, 0, 0, 0.9))
+    drop-shadow(0 0 6px var(--building-outline-color));
+  stroke: var(--building-outline-color);
+  stroke-opacity: 0.96;
+  stroke-width: 1.7;
+}
+
+.building-hit-link:hover .building-outline-backdrop,
+.building-hit-link:focus-visible .building-outline-backdrop {
+  stroke-width: 5.4;
+}
+
+.building-hit-link:hover .building-outline-accent,
+.building-hit-link:focus-visible .building-outline-accent {
+  fill: color-mix(in srgb, var(--building-outline-color) 16%, transparent);
+  stroke-opacity: 1;
+  stroke-width: 2.6;
+}

@@ -1,0 +1,79 @@
+.celestial-overlay {
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  position: absolute;
+  z-index: 1;
+}
+
+.celestial-image,
+.celestial-reflection {
+  left: var(--celestial-left);
+  mix-blend-mode: screen;
+  object-fit: contain;
+  opacity: var(--celestial-opacity);
+  position: absolute;
+  top: var(--celestial-top);
+  user-select: none;
+  width: 75px;
+}
+
+.celestial-image {
+  transform: translate(-50%, -50%) scale(var(--celestial-scale));
+  animation: celestial-appear 180ms ease-out;
+  transition:
+    left 160ms ease-out,
+    opacity 450ms ease,
+    top 160ms ease-out,
+    transform 450ms ease;
+}
+
+.celestial-image-sun {
+  filter: sepia(1) saturate(8) hue-rotate(350deg) brightness(1.35) contrast(0.95)
+    drop-shadow(0 0 16px rgba(255, 185, 72, 0.82));
+}
+
+.celestial-image-moon {
+  filter: sepia(0.35) saturate(2) hue-rotate(170deg) brightness(1.55) contrast(0.82)
+    drop-shadow(0 0 14px rgba(154, 205, 255, 0.62));
+}
+
+.celestial-reflection-layer {
+  inset: 0;
+  -webkit-mask-image: url('/water.svg');
+  -webkit-mask-mode: alpha;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  mask-image: url('/water.svg');
+  mask-mode: alpha;
+  mask-repeat: no-repeat;
+  mask-size: 100% 100%;
+  pointer-events: none;
+  position: absolute;
+}
+
+.celestial-reflection {
+  filter: blur(0.35px);
+  transform: translate(-50%, -50%) scale(calc(var(--celestial-scale) * 1.12), calc(var(--celestial-scale) * -0.42));
+  transition:
+    left 160ms ease-out,
+    opacity 450ms ease,
+    top 160ms ease-out,
+    transform 450ms ease;
+}
+
+.celestial-reflection-sun {
+  filter: sepia(1) saturate(5) hue-rotate(350deg) brightness(1.1) contrast(0.9) blur(0.45px);
+}
+
+.celestial-reflection-moon {
+  filter: sepia(0.25) saturate(1.6) hue-rotate(170deg) brightness(1.35) contrast(0.78)
+    blur(0.35px);
+}
+
+@keyframes celestial-appear {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(calc(var(--celestial-scale) * 0.96));
+  }
+}

@@ -1,0 +1,26 @@
+.site-shell {
+  --sky-color: #4d5861;
+  --water-color: #3a7685;
+  --waterline: 76%;
+  --building-outline-color: #fff700;
+  --scene-lighting-color: #ffffff;
+  --scene-lighting-opacity: 0;
+
+  align-items: center;
+  background:
+    linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--sky-color) 88%, #ffffff) 0%,
+      var(--sky-color) calc(var(--waterline) * 0.54),
+      color-mix(in srgb, var(--sky-color) 82%, var(--water-color)) calc(var(--waterline) - 7%),
+      color-mix(in srgb, var(--sky-color) 72%, var(--water-color)) var(--waterline),
+      color-mix(in srgb, var(--water-color) 88%, var(--sky-color)) calc(var(--waterline) + 3%),
+      var(--water-color) calc(var(--waterline) + 13%),
+      color-mix(in srgb, var(--water-color) 78%, #000000) 100%
+    );
+  display: flex;
+  justify-content: center;
+  min-height: 100svh;
+  overflow: hidden;
+  width: 100%;
+}
