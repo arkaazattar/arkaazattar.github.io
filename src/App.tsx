@@ -21,6 +21,52 @@ import {
 } from './data/scene'
 import './App.css'
 
+const quickLinks = [
+  {
+    label: 'GitHub',
+    iconPath: '/github.svg',
+    href: 'https://github.com/arkaazattar',
+    target: '_blank',
+  },
+  {
+    label: 'LinkedIn',
+    iconPath: '/linkedin.svg',
+    href: 'https://linkedin.com/in/arkaazattar',
+    target: '_blank',
+  },
+  {
+    label: 'Email',
+    iconPath: '/email.svg',
+    href: 'mailto:arkaazattar@gmail.com',
+    target: '_blank'
+  },
+  {
+    label: 'Resume',
+    iconPath: '/resume.svg',
+    href: '/resume.pdf',
+    target: '_blank',
+  },
+]
+
+function QuickLinksBar() {
+  return (
+    <nav className="quicklinks-bar" aria-label="Quick links">
+      {quickLinks.map((link) => (
+        <a
+          className="quicklink-button"
+          href={link.href}
+          target={link.target}
+          rel={link.target === '_blank' ? 'noopener noreferrer' : undefined}
+          aria-label={link.label}
+          key={link.label}
+        >
+          <img src={link.iconPath} alt="" aria-hidden="true" className="quicklink-icon" />
+        </a>
+      ))}
+    </nav>
+  )
+}
+
 function App() {
   const [mode, setMode] = useState<SceneMode>('live')
   const [timeMinutes, setTimeMinutes] = useState(() => getTorontoMinutes())
@@ -135,6 +181,7 @@ function App() {
         weather={weather}
       />
       <WeatherOverlay weather={weather} />
+      <QuickLinksBar />
       <SceneControls
         mode={mode}
         timeMinutes={timeMinutes}

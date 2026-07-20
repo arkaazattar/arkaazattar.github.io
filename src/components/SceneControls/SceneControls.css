@@ -1,5 +1,5 @@
 .scene-controls {
-  color: white;
+  color: #eaffff;
   display: grid;
   gap: 0.75rem;
   left: auto;
@@ -10,6 +10,9 @@
   width: min(48rem, calc(100vw - 2rem));
   z-index: 5;
   font-family:'Courier New', Courier, monospace;
+  text-shadow:
+    0 0 8px rgba(34, 246, 255, 0.38),
+    0 1px 8px rgba(0, 0, 0, 0.42);
 }
 
 @media (max-width: 56rem) {
@@ -57,9 +60,11 @@
 /* Live/manual button: use theme building color variable to avoid hardcoded values */
 .live-button {
   /* Blend the building outline color with white for sufficient contrast */
-  color: color-mix(in srgb, var(--building-outline-color) 70%, white 30%);
+  color: color-mix(in srgb, var(--building-outline-color) 82%, white 18%);
   font-weight: 700;
-  text-shadow: 0 1px 6px color-mix(in srgb, var(--building-outline-color) 50%, rgba(255,255,255,0.1));
+  text-shadow:
+    0 0 8px color-mix(in srgb, var(--building-outline-color) 62%, transparent),
+    0 1px 8px rgba(0, 0, 0, 0.46);
 }
 
 /* Slight hover darker for clickable manual state */
@@ -98,8 +103,16 @@
 .time-slider {
   -webkit-appearance: none;
   appearance: none;
-  background: color-mix(in srgb, var(--building-outline-color) 20%, rgba(255, 255, 255, 0.2));
+  background:
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--building-outline-color) 62%, #ffffff 12%),
+      #ff4fc8
+    );
   border-radius: 999px;
+  box-shadow:
+    0 0 8px color-mix(in srgb, var(--building-outline-color) 42%, transparent),
+    inset 0 0 4px rgba(255, 255, 255, 0.42);
   cursor: pointer;
   height: 7px;
   margin: 0;
@@ -109,18 +122,24 @@
 .time-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  background: #aeb5c1;
-  border: 0;
+  background: #f8ffff;
+  border: 1px solid color-mix(in srgb, var(--building-outline-color) 72%, #ffffff);
   border-radius: 50%;
+  box-shadow:
+    0 0 8px var(--building-outline-color),
+    0 0 14px rgba(255, 79, 200, 0.72);
   cursor: pointer;
   height: 12px;
   width: 12px;
 }
 
 .time-slider::-moz-range-thumb {
-  background: #aeb5c1;
-  border: 0;
+  background: #f8ffff;
+  border: 1px solid color-mix(in srgb, var(--building-outline-color) 72%, #ffffff);
   border-radius: 50%;
+  box-shadow:
+    0 0 8px var(--building-outline-color),
+    0 0 14px rgba(255, 79, 200, 0.72);
   cursor: pointer;
   height: 1.7rem;
   width: 1.7rem;

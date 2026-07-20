@@ -28,8 +28,8 @@ export default function WeatherOverlay({ weather }: WeatherOverlayProps) {
       >
         <div className="weather-rainfall-plane">
           <Rain
-            dropletColor="rgb(96,126,158)"
-            dropletOpacity={weather === 'thunder' ? 0.5 : 0.42}
+            dropletColor="rgb(61,236,255)"
+            dropletOpacity={weather === 'thunder' ? 0.58 : 0.48}
             numDrops={weather === 'thunder' ? 760 : 620}
             showImpact={false}
           />

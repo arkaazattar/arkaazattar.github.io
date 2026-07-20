@@ -31,13 +31,14 @@
 
 .weather-overlay-fog {
   background:
-    linear-gradient(180deg, transparent 0 22%, rgba(236, 242, 244, 0.2) 48%, transparent 72%),
-    linear-gradient(90deg, transparent, rgba(236, 242, 244, 0.28), transparent);
+    linear-gradient(180deg, transparent 0 22%, rgba(63, 238, 255, 0.16) 48%, transparent 72%),
+    linear-gradient(90deg, transparent, rgba(255, 79, 200, 0.14), rgba(63, 238, 255, 0.2), transparent);
+  mix-blend-mode: screen;
 }
 
 .weather-lightning {
   animation: lightning-flash 7.5s linear infinite;
-  background: rgba(225, 240, 255, 0.92);
+  background: rgba(191, 249, 255, 0.96);
   inset: 0;
   mix-blend-mode: screen;
   opacity: 0;
@@ -47,7 +48,7 @@
 
 .weather-overlay-thunder::after {
   animation: storm-dim 7.5s linear infinite;
-  background: rgba(8, 12, 20, 0.16);
+  background: rgba(2, 8, 24, 0.2);
   content: '';
   inset: 0;
   pointer-events: none;

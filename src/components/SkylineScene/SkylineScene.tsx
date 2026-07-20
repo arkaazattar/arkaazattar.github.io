@@ -433,6 +433,7 @@ export default function SkylineScene({
           width={skylineImage.width}
           height={skylineImage.height}
         />
+        <div className="skyline-image-lighting" aria-hidden="true" />
         {skyOverlay}
 
         {celestialOverlay}
