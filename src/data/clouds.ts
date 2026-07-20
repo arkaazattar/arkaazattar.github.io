@@ -103,7 +103,7 @@ export const skylineClouds: SkylineCloud[] = [
     reflectionOpacity: 0.12,
     scale: 0.38,
     top: 18,
-    travelDurationSeconds: 300,
+    travelDurationSeconds: 290,
   },
   {
     ...getCloudAsset('small-cloud-2'),

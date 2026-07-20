@@ -9,6 +9,7 @@
   bottom: 1rem;
   width: min(48rem, calc(100vw - 2rem));
   z-index: 5;
+  font-family:'Courier New', Courier, monospace;
 }
 
 @media (max-width: 56rem) {
@@ -53,7 +54,20 @@
   cursor: default;
 }
 
-.scene-control-text-button:not(:disabled):hover,
+/* Live/manual button: use theme building color variable to avoid hardcoded values */
+.live-button {
+  /* Blend the building outline color with white for sufficient contrast */
+  color: color-mix(in srgb, var(--building-outline-color) 70%, white 30%);
+  font-weight: 700;
+  text-shadow: 0 1px 6px color-mix(in srgb, var(--building-outline-color) 50%, rgba(255,255,255,0.1));
+}
+
+/* Slight hover darker for clickable manual state */
+.live-button:not(:disabled):hover {
+  color: color-mix(in srgb, var(--building-outline-color) 80%, white 20%);
+}
+
+.scene-control-text-button:not(.live-button):not(:disabled):hover,
 .date-toggle-button:hover,
 .date-nav-button:hover {
   color: rgba(255, 255, 255, 0.78);

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import {
   formatSceneDate,
   formatSceneTime,
@@ -26,6 +26,12 @@ type SceneControlsProps = {
 const weatherOptions: SceneWeather[] = ['clear', 'rain', 'snow', 'fog', 'thunder']
 const seasonOptions: SceneSeason[] = ['spring', 'summer', 'fall', 'winter']
 
+const getCurrentMinutes = (offset: number, date = new Date()) => {
+  const now = new Date(date)
+  now.setDate(now.getDate() + offset)
+  return now.getHours() * 60 + now.getMinutes()
+}
+
 export default function SceneControls({
   mode,
   timeMinutes,
@@ -40,21 +46,54 @@ export default function SceneControls({
   onSeasonChange,
 }: SceneControlsProps) {
   const [showMoonLabel, setShowMoonLabel] = useState(false)
+  const [currentDate, setCurrentDate] = useState(() => new Date())
+
+  useEffect(() => {
+    if (mode !== 'live') {
+      return
+    }
+
+    const id = setInterval(() => setCurrentDate(new Date()), 15_000)
+    return () => clearInterval(id)
+  }, [mode])
+
   const dateLabel = showMoonLabel ? moonPhase.label : formatSceneDate(dayOffset)
-  const timeLabel = formatSceneTime(timeMinutes)
+  const displayMinutes = mode === 'live' ? getCurrentMinutes(dayOffset, currentDate) : timeMinutes
+  const timeLabel = formatSceneTime(displayMinutes)
+
+  // Reset key scene state to live defaults by asking parent to switch to live.
+  // The parent (App) will set the authoritative time/dayOffset when switching to live.
+  const resetToLive = () => {
+    onModeChange('live')
+  }
+
+  // Helper to perform a user-driven change. If we're currently live, first switch
+  // to manual mode then apply the change on next tick so the parent sees the mode
+  // transition before the value update.
+  const applyUserChange = (fn: () => void) => {
+    if (mode === 'live') {
+      onModeChange('manual')
+      window.setTimeout(fn, 0)
+    } else {
+      fn()
+    }
+  }
+
+  const handleTimeSliderChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const minutes = Number(event.target.value)
+    applyUserChange(() => onTimeChange(minutes))
+  }
 
   const cycleSeason = () => {
     const currentIndex = seasonOptions.indexOf(season)
     const nextSeason = seasonOptions[(currentIndex + 1) % seasonOptions.length]
-
-    onSeasonChange(nextSeason)
+    applyUserChange(() => onSeasonChange(nextSeason))
   }
 
   const cycleWeather = () => {
     const currentIndex = weatherOptions.indexOf(weather)
     const nextWeather = weatherOptions[(currentIndex + 1) % weatherOptions.length]
-
-    onWeatherChange(nextWeather)
+    applyUserChange(() => onWeatherChange(nextWeather))
   }
 
   return (
@@ -63,11 +102,13 @@ export default function SceneControls({
         <span className="time-slider-text">
           <button
             type="button"
-            className="scene-control-text-button"
+            className={`scene-control-text-button live-button ${mode === 'live' ? 'is-live' : ''}`}
             disabled={mode === 'live'}
-            onClick={() => onModeChange('live')}
+            onClick={() => {
+              if (mode !== 'live') resetToLive()
+            }}
           >
-            live
+            {mode === 'live' ? 'live' : 'manual'}
           </button>
           <span className="scene-control-separator" aria-hidden="true">
             •
@@ -96,14 +137,14 @@ export default function SceneControls({
             type="button"
             className="date-nav-button"
             aria-label="Previous day"
-            onClick={() => onDayOffsetChange(dayOffset - 1)}
+            onClick={() => applyUserChange(() => onDayOffsetChange(dayOffset - 1))}
           >
             ←
           </button>
           <button
             type="button"
             className="date-toggle-button"
-            onClick={() => setShowMoonLabel((current) => !current)}
+            onClick={() => applyUserChange(() => setShowMoonLabel((current) => !current))}
           >
             {dateLabel}
           </button>
@@ -111,7 +152,7 @@ export default function SceneControls({
             type="button"
             className="date-nav-button"
             aria-label="Next day"
-            onClick={() => onDayOffsetChange(dayOffset + 1)}
+            onClick={() => applyUserChange(() => onDayOffsetChange(dayOffset + 1))}
           >
             →
           </button>
@@ -125,7 +166,7 @@ export default function SceneControls({
           className="time-slider"
           max={1439}
           min={0}
-          onChange={(event) => onTimeChange(Number(event.target.value))}
+          onChange={handleTimeSliderChange}
           step={5}
           type="range"
           value={timeMinutes}
