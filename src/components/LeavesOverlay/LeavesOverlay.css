@@ -1,0 +1,128 @@
+.leaves-overlay {
+  inset: -12vh 0 0;
+  overflow: hidden;
+  pointer-events: none;
+  position: fixed;
+  z-index: 4;
+}
+
+.falling-leaf-path {
+  animation:
+    leaf-fall var(--leaf-duration) linear infinite,
+    leaf-drift var(--leaf-sway-duration) ease-in-out infinite;
+  animation-delay: var(--leaf-delay);
+  left: var(--leaf-left);
+  opacity: 0.78;
+  position: absolute;
+  top: -8vh;
+  transform: translate3d(0, 0, 0) scale(var(--leaf-scale));
+}
+
+.falling-leaf {
+  animation: leaf-flutter var(--leaf-flutter-duration) ease-in-out infinite;
+  background: #d97624;
+  box-shadow:
+    2px 0 0 rgba(1, 5, 18, 0.36),
+    0 2px 0 rgba(1, 5, 18, 0.28);
+  display: block;
+  height: 8px;
+  transform: rotate(-18deg);
+  transform-origin: 50% 45%;
+  width: 10px;
+}
+
+.falling-leaf::before,
+.falling-leaf::after {
+  content: '';
+  position: absolute;
+}
+
+.falling-leaf::before {
+  background: inherit;
+  height: 6px;
+  left: 2px;
+  top: -4px;
+  width: 6px;
+}
+
+.falling-leaf::after {
+  background: rgba(1, 5, 18, 0.5);
+  height: 7px;
+  left: 5px;
+  top: 2px;
+  width: 1px;
+}
+
+.falling-leaf-gold {
+  background: #d6a73f;
+}
+
+.falling-leaf-amber {
+  background: #c86f2b;
+}
+
+.falling-leaf-red {
+  background: #a94b34;
+}
+
+@keyframes leaf-fall {
+  0% {
+    opacity: 0;
+    transform: translate3d(calc(var(--leaf-wind) * -0.38), -8vh, 0) scale(var(--leaf-scale));
+  }
+
+  8% {
+    opacity: 0.78;
+  }
+
+  45% {
+    transform: translate3d(calc(var(--leaf-wind) * 0.28), 50vh, 0) scale(var(--leaf-scale));
+  }
+
+  68% {
+    transform: translate3d(calc(var(--leaf-wind) * -0.12), 82vh, 0) scale(var(--leaf-scale));
+  }
+
+  88% {
+    opacity: 0.78;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate3d(calc(var(--leaf-wind) * 0.72), 132vh, 0) scale(var(--leaf-scale));
+  }
+}
+
+@keyframes leaf-drift {
+  0%,
+  100% {
+    margin-left: calc(var(--leaf-sway) * -0.5);
+  }
+
+  50% {
+    margin-left: calc(var(--leaf-sway) * 0.5);
+  }
+}
+
+@keyframes leaf-flutter {
+  0%,
+  100% {
+    transform: translateX(-2px) rotate(-20deg) scaleX(1);
+  }
+
+  35% {
+    transform: translateX(3px) rotate(42deg) scaleX(0.82);
+  }
+
+  70% {
+    transform: translateX(-1px) rotate(118deg) scaleX(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .falling-leaf-path,
+  .falling-leaf {
+    animation: none;
+    opacity: 0;
+  }
+}

@@ -1,11 +1,13 @@
-import { useCallback, useEffect, useRef, type CSSProperties, type ReactNode } from 'react'
+import { useCallback, useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react'
 import {
   buildingRegions,
   SKYLINE_IMAGE,
   WINTER_SKYLINE_IMAGE,
+  type BuildingCallout,
   type BuildingRegion,
 } from '../../data/buildings'
 import { skylineClouds } from '../../data/clouds'
+import { ASSET_PATHS } from '../../data/assets'
 import type { SceneSeason, SceneWeather } from '../../data/scene'
 import './SkylineScene.css'
 
@@ -19,6 +21,13 @@ type SceneCloud = (typeof skylineClouds)[number] & {
   instanceId: string
 }
 
+type BuildingCalloutLayout = {
+  lineEndX: number
+  lineEndY: number
+  lineStartX: number
+  lineStartY: number
+}
+
 type SkylineSceneProps = {
   celestialOverlay?: ReactNode
   onBuildingSelect?: (building: BuildingRegion) => void
@@ -30,7 +39,7 @@ type SkylineSceneProps = {
 
 const waterlineProgress = 0.76
 const waterMaskAlphaThreshold = 8
-const waterMaskSrc = '/water.svg'
+const waterMaskSrc = ASSET_PATHS.scene.waterMask
 const rippleLifetimeMs = 1150
 const rippleSpawnIntervalMs = 80
 const rippleSpawnDistance = 0.035
@@ -40,6 +49,7 @@ const cloudReflectionCompression = 0.3
 const rainyCloudMultiplier = 2
 const rainyCloudTopOffsets = [0, -4, 5, -8]
 const rainyCloudScaleMultipliers = [1, 0.72, 0.86, 0.58]
+const calloutLineRiseRatio = 0.78
 
 export default function SkylineScene({
   celestialOverlay,
@@ -62,6 +72,9 @@ export default function SkylineScene({
   const rainRippleAnimationRef = useRef(0)
   const rainRippleRef = useRef({ seed: 739391, time: 0 })
   const waterMaskDataRef = useRef<ImageData | null>(null)
+  const [focusedBuildingId, setFocusedBuildingId] = useState<string | null>(null)
+  const [hoveredBuildingId, setHoveredBuildingId] = useState<string | null>(null)
+  const activeBuildingId = hoveredBuildingId ?? focusedBuildingId
 
   const setParallax = useCallback((x: number, y: number, originX = 50, originY = 50) => {
     parallaxRef.current = { x, y, originX, originY }
@@ -452,9 +465,21 @@ export default function SkylineScene({
               href={`#${building.id}`}
               aria-label={building.label}
               key={building.id}
+              onBlur={() => {
+                setFocusedBuildingId((currentId) =>
+                  currentId === building.id ? null : currentId,
+                )
+              }}
               onClick={(event) => {
                 event.preventDefault()
                 onBuildingSelect?.(building)
+              }}
+              onFocus={() => setFocusedBuildingId(building.id)}
+              onPointerEnter={() => setHoveredBuildingId(building.id)}
+              onPointerLeave={() => {
+                setHoveredBuildingId((currentId) =>
+                  currentId === building.id ? null : currentId,
+                )
               }}
             >
               <path className="building-hit-area" d={building.mapPath} />
@@ -462,10 +487,101 @@ export default function SkylineScene({
               <path className="building-outline building-outline-accent" d={building.mapPath} />
             </a>
           ))}
+          <g className="building-callout-layer">
+            {buildingRegions.map((building) => (
+              <BuildingCalloutGraphic
+                callout={building.callout}
+                isActive={activeBuildingId === building.id}
+                key={`${building.id}-callout`}
+              />
+            ))}
+          </g>
         </svg>
+        <div className="building-callout-text-layer" aria-hidden="true">
+          {buildingRegions.map((building) => (
+            <BuildingCalloutLabel
+              callout={building.callout}
+              isActive={activeBuildingId === building.id}
+              key={`${building.id}-callout-label`}
+            />
+          ))}
+        </div>
       </div>
     </section>
   )
+}
+
+function BuildingCalloutGraphic({
+  callout,
+  isActive,
+}: {
+  callout: BuildingCallout
+  isActive: boolean
+}) {
+  const { lineEndX, lineEndY, lineStartX, lineStartY } = getBuildingCalloutLayout(callout)
+
+  return (
+    <g
+      className={[
+        'building-callout',
+        `building-callout-${callout.direction}`,
+        isActive ? 'building-callout-active' : '',
+      ].join(' ')}
+      aria-hidden="true"
+    >
+      <path
+        className="building-callout-line"
+        d={`M ${lineStartX} ${lineStartY} L ${lineEndX} ${lineEndY}`}
+        pathLength={1}
+      />
+    </g>
+  )
+}
+
+function BuildingCalloutLabel({
+  callout,
+  isActive,
+}: {
+  callout: BuildingCallout
+  isActive: boolean
+}) {
+  const { lineEndX, lineEndY } = getBuildingCalloutLayout(callout)
+  const labelStyle = {
+    left: `${(lineEndX / SKYLINE_IMAGE.width) * 100}%`,
+    top: `${(lineEndY / SKYLINE_IMAGE.height) * 100}%`,
+  } as CSSProperties
+
+  return (
+    <div
+      className={[
+        'building-callout-label',
+        `building-callout-label-${callout.direction}`,
+        isActive ? 'building-callout-label-active' : '',
+      ].join(' ')}
+      style={labelStyle}
+    >
+      <span className="building-callout-label-text">{callout.label}</span>
+    </div>
+  )
+}
+
+function getBuildingCalloutLayout(callout: BuildingCallout): BuildingCalloutLayout {
+  const directionSign = callout.direction === 'right' ? 1 : -1
+  const lineEndX = callout.anchorX + directionSign * callout.lineLength
+  const lineEndY = callout.anchorY - Math.round(callout.lineLength * calloutLineRiseRatio)
+  const lineDeltaX = lineEndX - callout.anchorX
+  const lineDeltaY = lineEndY - callout.anchorY
+  const lineDistance = Math.hypot(lineDeltaX, lineDeltaY)
+  const lineClearance = Math.min(callout.lineClearance ?? 32, lineDistance - 1)
+  const lineStartX = callout.anchorX + (lineDeltaX / lineDistance) * lineClearance
+  const lineStartY = callout.anchorY + (lineDeltaY / lineDistance) * lineClearance
+
+  return {
+    lineEndX,
+    lineEndY,
+    lineStartX,
+    lineStartY,
+  }
 }
 
 function getSceneClouds(weather: SceneWeather): SceneCloud[] {

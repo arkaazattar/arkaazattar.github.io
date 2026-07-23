@@ -9,10 +9,12 @@
   bottom: 1rem;
   width: min(48rem, calc(100vw - 2rem));
   z-index: 5;
-  font-family:'Courier New', Courier, monospace;
+  font-family:'Pixel Operator', 'Courier New', Courier, monospace;
   text-shadow:
     0 0 8px rgba(34, 246, 255, 0.38),
     0 1px 8px rgba(0, 0, 0, 0.42);
+  background-color: rgba(0, 0, 0, 0.28);
+  border-radius: 4px;
 }
 
 @media (max-width: 56rem) {

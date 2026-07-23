@@ -1,3 +1,5 @@
+import { ASSET_PATHS } from './assets'
+
 export type CloudAsset = {
   id: string
   label: string
@@ -21,7 +23,7 @@ export const cloudAssets: CloudAsset[] = [
   {
     id: 'large-cloud-1',
     label: 'Large Cloud 1',
-    src: '/large_cloud1.png',
+    src: ASSET_PATHS.clouds.large1,
     alt: 'Large cloud 1',
     width: 991,
     height: 505,
@@ -29,7 +31,7 @@ export const cloudAssets: CloudAsset[] = [
   {
     id: 'large-cloud-2',
     label: 'Large Cloud 2',
-    src: '/large_cloud2.png',
+    src: ASSET_PATHS.clouds.large2,
     alt: 'Large cloud 2',
     width: 594,
     height: 221,
@@ -37,7 +39,7 @@ export const cloudAssets: CloudAsset[] = [
   {
     id: 'large-cloud-3',
     label: 'Large Cloud 3',
-    src: '/large_cloud3.png',
+    src: ASSET_PATHS.clouds.large3,
     alt: 'Large cloud 3',
     width: 898,
     height: 390,
@@ -45,7 +47,7 @@ export const cloudAssets: CloudAsset[] = [
   {
     id: 'medium-cloud-1',
     label: 'Medium Cloud 1',
-    src: '/medium_cloud1.png',
+    src: ASSET_PATHS.clouds.medium1,
     alt: 'Medium cloud 1',
     width: 535,
     height: 220,
@@ -53,7 +55,7 @@ export const cloudAssets: CloudAsset[] = [
   {
     id: 'small-cloud-1',
     label: 'Small Cloud 1',
-    src: '/small_cloud1.png',
+    src: ASSET_PATHS.clouds.small1,
     alt: 'Small cloud 1',
     width: 610,
     height: 200,
@@ -61,7 +63,7 @@ export const cloudAssets: CloudAsset[] = [
   {
     id: 'small-cloud-2',
     label: 'Small Cloud 2',
-    src: '/small_cloud2.png',
+    src: ASSET_PATHS.clouds.small2,
     alt: 'Small cloud 2',
     width: 282,
     height: 123,
@@ -69,7 +71,7 @@ export const cloudAssets: CloudAsset[] = [
   {
     id: 'small-cloud-3',
     label: 'Small Cloud 3',
-    src: '/small_cloud3.png',
+    src: ASSET_PATHS.clouds.small3,
     alt: 'Small cloud 3',
     width: 390,
     height: 199,
@@ -77,7 +79,7 @@ export const cloudAssets: CloudAsset[] = [
   {
     id: 'small-cloud-4',
     label: 'Small Cloud 4',
-    src: '/small_cloud4.png',
+    src: ASSET_PATHS.clouds.small4,
     alt: 'Small cloud 4',
     width: 530,
     height: 161,

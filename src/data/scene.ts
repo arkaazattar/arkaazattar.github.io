@@ -1,3 +1,5 @@
+import { ASSET_PATHS } from './assets'
+
 export type SceneMode = 'live' | 'today' | 'manual'
 export type SceneWeather = 'clear' | 'rain' | 'snow' | 'fog' | 'thunder'
 export type SceneSeason = 'spring' | 'summer' | 'fall' | 'winter'
@@ -153,7 +155,7 @@ export function getMoonPhase(dayOffset: number): MoonPhase {
   return {
     index: phaseIndex + 1,
     label: MOON_PHASE_LABELS[phaseIndex],
-    imageSrc: phaseIndex === 0 ? null : `/phase${phaseIndex + 1}.png`,
+    imageSrc: ASSET_PATHS.celestial.moonPhases[phaseIndex],
   }
 }
 
@@ -217,7 +219,7 @@ export function getSceneTheme(
   const previousStop =
     themeStops[themeStops.indexOf(nextStop) - 1] ?? themeStops[0]
   const span = Math.max(nextStop.minute - previousStop.minute, 1)
-  const progress = (minute - previousStop.minute) / span
+  const progress = smoothStep((minute - previousStop.minute) / span)
   const baseTheme = {
     skyColor: mixHex(previousStop.skyColor, nextStop.skyColor, progress),
     waterColor: mixHex(previousStop.waterColor, nextStop.waterColor, progress),
@@ -303,12 +305,12 @@ function getThemeStops({ sunriseMinutes, sunsetMinutes }: SolarTimes): ThemeStop
       lightingOpacity: 0.24,
     },
     {
-      minute: clampMinute(sunriseMinutes - 44),
-      skyColor: '#12305d',
-      waterColor: '#0c3c65',
-      outlineColor: '#ffd84d',
-      lightingColor: '#164174',
-      lightingOpacity: 0.24,
+      minute: clampMinute(sunriseMinutes - 30),
+      skyColor: '#5c5470',
+      waterColor: '#4b4e72',
+      outlineColor: '#9ef0c4',
+      lightingColor: '#71546b',
+      lightingOpacity: 0.21,
     },
     {
       minute: clampMinute(sunriseMinutes - 15),
@@ -367,12 +369,12 @@ function getThemeStops({ sunriseMinutes, sunsetMinutes }: SolarTimes): ThemeStop
       lightingOpacity: 0.26,
     },
     {
-      minute: clampMinute(sunsetMinutes + 36),
-      skyColor: '#171642',
-      waterColor: '#0b2142',
-      outlineColor: '#22f6ff',
-      lightingColor: '#1e113e',
-      lightingOpacity: 0.26,
+      minute: clampMinute(sunsetMinutes + 70),
+      skyColor: '#101a3b',
+      waterColor: '#08203e',
+      outlineColor: '#9b9cf0',
+      lightingColor: '#111538',
+      lightingOpacity: 0.29,
     },
     {
       minute: clampMinute(sunsetMinutes + 105),
@@ -471,4 +473,10 @@ function rgbToHex({ r, g, b }: { r: number; g: number; b: number }) {
 
 function lerp(start: number, end: number, amount: number) {
   return start + (end - start) * amount
+}
+
+function smoothStep(amount: number) {
+  const clampedAmount = Math.min(Math.max(amount, 0), 1)
+
+  return clampedAmount * clampedAmount * (3 - 2 * clampedAmount)
 }

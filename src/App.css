@@ -43,7 +43,7 @@
   right: 0;
   top: 49%;
   transform: translateY(-50%);
-  z-index: 5;
+  z-index: 7;
 }
 
 .quicklink-button {
@@ -51,12 +51,13 @@
   appearance: none;
   background: transparent;
   border: 0;
-  color: #02030d;
-  cursor: default;
+  color: black;
   display: inline-flex;
   height: 2rem;
   justify-content: center;
   padding: 0;
+  position: relative;
+  transition: color 180ms ease;
   width: 2rem;
   cursor: pointer;
   animation: quicklink-animation;
@@ -64,7 +65,7 @@
 }
 
 .quicklink-button:hover {
-  transform: scale(1.05);
+  color: var(--building-outline-color);
 }
 
 .quicklink-button svg,
@@ -80,6 +81,27 @@
 
 .quicklink-button img {
   filter: none;
+  opacity: 0;
+}
+
+.quicklink-button::before {
+  background: currentColor;
+  content: '';
+  display: block;
+  height: 1.85rem;
+  inset: 50% auto auto 50%;
+  -webkit-mask-position: center;
+  -webkit-mask-image: var(--quicklink-icon);
+  mask-position: center;
+  mask-image: var(--quicklink-icon);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  transition: background-color 180ms ease;
+  width: 1.85rem;
 }
 
 .quicklink-button:focus-visible {
@@ -99,6 +121,11 @@
   }
 
   .quicklink-button svg {
+    height: 1.55rem;
+    width: 1.55rem;
+  }
+
+  .quicklink-button::before {
     height: 1.55rem;
     width: 1.55rem;
   }

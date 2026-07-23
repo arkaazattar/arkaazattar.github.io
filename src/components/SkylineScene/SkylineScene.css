@@ -32,7 +32,8 @@
 .skyline-image-lighting,
 .skyline-lighting,
 .water-ripple-canvas,
-.building-map {
+.building-map,
+.building-callout-text-layer {
   display: block;
   height: 100%;
   inset: 0;
@@ -116,11 +117,11 @@
 
 .cloud-reflection-layer {
   inset: 0;
-  -webkit-mask-image: url('/water.svg');
+  -webkit-mask-image: var(--water-mask-image);
   -webkit-mask-mode: alpha;
   -webkit-mask-repeat: no-repeat;
   -webkit-mask-size: 100% 100%;
-  mask-image: url('/water.svg');
+  mask-image: var(--water-mask-image);
   mask-mode: alpha;
   mask-repeat: no-repeat;
   mask-size: 100% 100%;
@@ -148,11 +149,11 @@
 }
 
 .water-ripple-canvas {
-  -webkit-mask-image: url('/water.svg');
+  -webkit-mask-image: var(--water-mask-image);
   -webkit-mask-mode: alpha;
   -webkit-mask-repeat: no-repeat;
   -webkit-mask-size: 100% 100%;
-  mask-image: url('/water.svg');
+  mask-image: var(--water-mask-image);
   mask-mode: alpha;
   mask-repeat: no-repeat;
   mask-size: 100% 100%;
@@ -166,6 +167,12 @@
 .building-map {
   overflow: visible;
   z-index: 4;
+}
+
+.building-callout-text-layer {
+  overflow: visible;
+  pointer-events: none;
+  z-index: 5;
 }
 
 .building-hit-link {
@@ -219,6 +226,130 @@
   fill: color-mix(in srgb, var(--building-outline-color) 22%, transparent);
   stroke-opacity: 1;
   stroke-width: 2.9;
+}
+
+.building-callout {
+  color: var(--building-outline-color);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0ms linear 560ms;
+}
+
+.building-callout-layer {
+  pointer-events: none;
+}
+
+.building-callout-line {
+  fill: none;
+  filter: drop-shadow(0 0 6px color-mix(in srgb, currentColor 44%, transparent));
+  stroke: currentColor;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  stroke-linecap: square;
+  stroke-width: 2.2;
+  transition: stroke-dashoffset 240ms cubic-bezier(0.55, 0, 0.7, 0.3) 70ms;
+  vector-effect: non-scaling-stroke;
+}
+
+.building-callout-label {
+  align-items: center;
+  color: #f8ffff;
+  display: flex;
+  font-family: 'Pixel Operator', 'PixelOperator', 'Pixel Operator Mono', 'Courier New', Courier, monospace;
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 1;
+  min-height: 1.75rem;
+  opacity: 0;
+  padding: 0.26rem 0.58rem 0.26rem;
+  position: absolute;
+  text-shadow:
+    1px 1px 0 rgba(1, 5, 18, 0.96),
+    2px 2px 0 rgba(1, 5, 18, 0.72);
+  transform: translateY(-50%);
+  transition: opacity 0ms linear 520ms;
+  white-space: nowrap;
+}
+
+.building-callout-label::before {
+  background: color-mix(in srgb, var(--building-outline-color) 30%, transparent);
+  border: 2px solid color-mix(in srgb, var(--building-outline-color) 74%, #ffffff);
+  border-radius: 3px;
+  box-shadow:
+    0 0 12px color-mix(in srgb, var(--building-outline-color) 90%, transparent),
+    inset 0 0 12px color-mix(in srgb, var(--building-outline-color) 16%, transparent);
+  content: '';
+  inset: 0;
+  position: absolute;
+  transform: scaleX(0);
+  transition: transform 210ms cubic-bezier(0.55, 0, 0.7, 0.3) 70ms;
+}
+
+.building-callout-label-left {
+  transform: translate(-100%, -50%);
+}
+
+.building-callout-label-right::before {
+  transform-origin: left center;
+}
+
+.building-callout-label-left::before {
+  transform-origin: right center;
+}
+
+.building-callout-label-text {
+  opacity: 0;
+  position: relative;
+  transition: opacity 90ms ease;
+}
+
+.building-callout-active {
+  opacity: 1;
+  transition-delay: 0ms;
+}
+
+.building-callout-active .building-callout-line {
+  stroke-dashoffset: 0;
+  transition-delay: 0ms;
+  transition-duration: 240ms;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.building-callout-label-active {
+  opacity: 1;
+  transition-delay: 0ms;
+}
+
+.building-callout-label-active::before {
+  transform: scaleX(1);
+  transition-delay: 185ms;
+  transition-duration: 230ms;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.building-callout-label-active .building-callout-label-text {
+  opacity: 1;
+  transition-delay: 260ms;
+  transition-duration: 220ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .building-callout,
+  .building-callout-line,
+  .building-callout-label,
+  .building-callout-label::before,
+  .building-callout-label-text {
+    transition: none;
+  }
+
+  .building-callout-active .building-callout-line {
+    stroke-dashoffset: 0;
+  }
+
+  .building-callout-label-active::before {
+    opacity: 1;
+    transform: scaleX(1);
+  }
 }
 
 @keyframes cloud-cross {

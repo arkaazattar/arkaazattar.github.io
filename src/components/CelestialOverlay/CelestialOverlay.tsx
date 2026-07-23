@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import type { CSSProperties } from 'react'
+import { ASSET_PATHS } from '../../data/assets'
 import type { MoonPhase, SolarTimes } from '../../data/scene'
 import './CelestialOverlay.css'
 
@@ -138,7 +139,7 @@ function getCelestialBody(
 
     return {
       alt: '',
-      imageSrc: '/sun_image.png',
+      imageSrc: ASSET_PATHS.celestial.sun,
       position: getCelestialPosition(progress),
       progress,
       scale: 1.04,

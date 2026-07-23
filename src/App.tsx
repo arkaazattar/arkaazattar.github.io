@@ -1,9 +1,11 @@
 import { useEffect, useMemo, useState, type CSSProperties } from 'react'
 import CelestialOverlay from './components/CelestialOverlay'
+import LeavesOverlay from './components/LeavesOverlay'
 import SceneControls from './components/SceneControls'
 import SkylineScene from './components/SkylineScene'
 import StarsOverlay from './components/StarsOverlay'
 import WeatherOverlay from './components/WeatherOverlay'
+import BuildingPanel from './components/BuildingPanel'
 import {
   DEFAULT_SOLAR_TIMES,
   SEASON_SOLAR_TIMES,
@@ -20,29 +22,31 @@ import {
   type SolarTimes,
 } from './data/scene'
 import './App.css'
+import { ASSET_PATHS } from './data/assets'
+import type { BuildingRegion } from './data/buildings'
 
 const quickLinks = [
   {
     label: 'GitHub',
-    iconPath: '/github.svg',
+    iconPath: ASSET_PATHS.icons.github,
     href: 'https://github.com/arkaazattar',
     target: '_blank',
   },
   {
     label: 'LinkedIn',
-    iconPath: '/linkedin.svg',
+    iconPath: ASSET_PATHS.icons.linkedin,
     href: 'https://linkedin.com/in/arkaazattar',
     target: '_blank',
   },
   {
     label: 'Email',
-    iconPath: '/email.svg',
+    iconPath: ASSET_PATHS.icons.email,
     href: 'mailto:arkaazattar@gmail.com',
     target: '_blank'
   },
   {
     label: 'Resume',
-    iconPath: '/resume.svg',
+    iconPath: ASSET_PATHS.icons.resume,
     href: '/resume.pdf',
     target: '_blank',
   },
@@ -59,6 +63,7 @@ function QuickLinksBar() {
           rel={link.target === '_blank' ? 'noopener noreferrer' : undefined}
           aria-label={link.label}
           key={link.label}
+          style={{ '--quicklink-icon': `url(${link.iconPath})` } as CSSProperties}
         >
           <img src={link.iconPath} alt="" aria-hidden="true" className="quicklink-icon" />
         </a>
@@ -76,6 +81,7 @@ function App() {
   const [dayOffset, setDayOffset] = useState(0)
   const [liveSolarTimes, setLiveSolarTimes] = useState<SolarTimes>(DEFAULT_SOLAR_TIMES)
   const [todayHourlyWeather, setTodayHourlyWeather] = useState<HourlyWeather[]>([])
+  const [selectedBuilding, setSelectedBuilding] = useState<BuildingRegion | null>(null)
   const solarTimes = mode === 'manual' ? SEASON_SOLAR_TIMES[season] : liveSolarTimes
   const weather =
     mode === 'manual'
@@ -140,8 +146,8 @@ function App() {
     }
   }, [mode])
 
-  const handleBuildingSelect = () => {
-    // Future detail panel will open from here.
+  const handleBuildingSelect = (building: BuildingRegion) => {
+    setSelectedBuilding(building)
   }
 
   const handleModeChange = (nextMode: SceneMode) => {
@@ -160,6 +166,11 @@ function App() {
 
   return (
     <main className="site-shell" style={siteStyle}>
+      {selectedBuilding && (
+        <BuildingPanel 
+          building={selectedBuilding}
+          onClose={() => setSelectedBuilding(null)} />
+      )}
       <SkylineScene
         celestialOverlay={
           <CelestialOverlay
@@ -181,6 +192,7 @@ function App() {
         weather={weather}
       />
       <WeatherOverlay weather={weather} />
+      {season === 'fall' && <LeavesOverlay />}
       <QuickLinksBar />
       <SceneControls
         mode={mode}
