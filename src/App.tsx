@@ -6,6 +6,7 @@ import SkylineScene from './components/SkylineScene'
 import StarsOverlay from './components/StarsOverlay'
 import WeatherOverlay from './components/WeatherOverlay'
 import BuildingPanel from './components/BuildingPanel'
+import MuteButton from './components/MuteButton'
 import {
   DEFAULT_SOLAR_TIMES,
   SEASON_SOLAR_TIMES,
@@ -82,6 +83,7 @@ function App() {
   const [liveSolarTimes, setLiveSolarTimes] = useState<SolarTimes>(DEFAULT_SOLAR_TIMES)
   const [todayHourlyWeather, setTodayHourlyWeather] = useState<HourlyWeather[]>([])
   const [selectedBuilding, setSelectedBuilding] = useState<BuildingRegion | null>(null)
+  const [audioMuted, setAudioMuted] = useState(true)
   const solarTimes = mode === 'manual' ? SEASON_SOLAR_TIMES[season] : liveSolarTimes
   const weather =
     mode === 'manual'
@@ -166,6 +168,10 @@ function App() {
 
   return (
     <main className="site-shell" style={siteStyle}>
+      <MuteButton
+        muted={audioMuted}
+        onClick={() => setAudioMuted((currentMuted) => !currentMuted)}
+      />
       {selectedBuilding && (
         <BuildingPanel 
           building={selectedBuilding}
@@ -191,7 +197,13 @@ function App() {
         }
         weather={weather}
       />
-      <WeatherOverlay weather={weather} />
+      <WeatherOverlay
+        muted={audioMuted}
+        season={season}
+        solarTimes={solarTimes}
+        timeMinutes={timeMinutes}
+        weather={weather}
+      />
       {season === 'fall' && <LeavesOverlay />}
       <QuickLinksBar />
       <SceneControls

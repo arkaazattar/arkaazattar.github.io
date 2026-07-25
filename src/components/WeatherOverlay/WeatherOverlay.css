@@ -37,7 +37,7 @@
 }
 
 .weather-lightning {
-  animation: lightning-flash 7.5s linear infinite;
+  animation: lightning-flash var(--thunder-cycle, 7.5s) linear infinite;
   background: rgba(191, 249, 255, 0.96);
   inset: 0;
   mix-blend-mode: screen;
@@ -47,7 +47,7 @@
 }
 
 .weather-overlay-thunder::after {
-  animation: storm-dim 7.5s linear infinite;
+  animation: storm-dim var(--thunder-cycle, 7.5s) linear infinite;
   background: rgba(2, 8, 24, 0.2);
   content: '';
   inset: 0;

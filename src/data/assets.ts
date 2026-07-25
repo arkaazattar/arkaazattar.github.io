@@ -1,6 +1,16 @@
 const PUBLIC_ASSET_ROOT = '/assets'
 
 export const ASSET_PATHS = {
+  audio: {
+    cityAmbience: '/audio/city_ambience.mp3',
+    dryLeaves: '/audio/dry_leaves.mp3',
+    rain: '/audio/rain.mp3',
+    springDay: '/audio/spring_day.mp3',
+    summerDay: '/audio/summer_day.mp3',
+    summerNight: '/audio/summer_night.mp3',
+    thunder: '/audio/thunder.mp3',
+    winterWind: '/audio/winter_wind.mp3',
+  },
   buildings: {
     cnTower: `${PUBLIC_ASSET_ROOT}/buildings/cn-tower.png`,
     eastTowerOne: `${PUBLIC_ASSET_ROOT}/buildings/east-tower-one.png`,

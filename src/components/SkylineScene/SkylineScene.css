@@ -18,8 +18,8 @@
   aspect-ratio: 3172 / 1344;
   height: max(100svh, calc(100vw * 1344 / 3172));
   position: relative;
-  transform: translate3d(var(--parallax-x), var(--parallax-y), 0) scale(var(--scene-zoom));
-  transform-origin: var(--parallax-origin-x) var(--parallax-origin-y);
+  /* transform: translate3d(var(--parallax-x), var(--parallax-y), 0) scale(var(--scene-zoom));
+  transform-origin: var(--parallax-origin-x) var(--parallax-origin-y); */
   transition:
     transform 80ms ease-out,
     transform-origin 80ms ease-out;
