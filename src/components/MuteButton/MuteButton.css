@@ -64,3 +64,20 @@
     transform: none;
   }
 }
+
+@media (max-width: 48rem), (max-height: 36rem) and (hover: none) and (pointer: coarse) {
+  .mute-button {
+    bottom: auto;
+    height: 46px;
+    left: max(0.5rem, env(safe-area-inset-left));
+    padding: 4px;
+    top: max(0.5rem, env(safe-area-inset-top));
+    width: 46px;
+  }
+
+  .mute-button__icon {
+    flex-basis: 22px;
+    height: 22px;
+    width: 22px;
+  }
+}

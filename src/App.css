@@ -109,24 +109,37 @@
   outline-offset: 3px;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 48rem), (max-height: 36rem) and (hover: none) and (pointer: coarse) {
+  .site-shell {
+    min-height: 100svh;
+  }
+
   .quicklinks-bar {
+    border: 2px solid color-mix(in srgb, var(--building-outline-color) 74%, #ffffff);
+    border-right: 0;
     gap: 0.35rem;
     padding: 0.45rem 0.35rem;
+    right: env(safe-area-inset-right);
   }
 
   .quicklink-button {
+    height: 2.25rem;
+    width: 2.25rem;
+  }
+
+  .quicklink-button svg,
+  .quicklink-button img {
     height: 1.75rem;
     width: 1.75rem;
   }
 
-  .quicklink-button svg {
-    height: 1.55rem;
-    width: 1.55rem;
+  .quicklink-button::before {
+    height: 1.75rem;
+    width: 1.75rem;
   }
 
-  .quicklink-button::before {
-    height: 1.55rem;
-    width: 1.55rem;
+  .site-shell:has(.building-panel) .quicklinks-bar,
+  .site-shell:has(.building-panel) .mute-button {
+    visibility: hidden;
   }
 }

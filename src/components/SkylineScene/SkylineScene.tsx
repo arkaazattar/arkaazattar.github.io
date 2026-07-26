@@ -62,6 +62,7 @@ export default function SkylineScene({
   const skylineImage = season === 'winter' ? WINTER_SKYLINE_IMAGE : SKYLINE_IMAGE
   const shouldRenderRipples = season !== 'winter'
   const sceneClouds = getSceneClouds(weather)
+  const mapRef = useRef<HTMLElement>(null)
   const frameRef = useRef<HTMLDivElement>(null)
   const rippleCanvasRef = useRef<HTMLCanvasElement>(null)
   const animationRef = useRef(0)
@@ -282,6 +283,21 @@ export default function SkylineScene({
   }
 
   useEffect(() => {
+    const map = mapRef.current
+    const mobileViewport = window.matchMedia(
+      '(max-width: 48rem), (max-height: 36rem) and (hover: none) and (pointer: coarse)',
+    )
+
+    if (!map || !mobileViewport.matches) return
+
+    const centerScene = window.requestAnimationFrame(() => {
+      map.scrollLeft = (map.scrollWidth - map.clientWidth) / 2
+    })
+
+    return () => window.cancelAnimationFrame(centerScene)
+  }, [])
+
+  useEffect(() => {
     let isActive = true
     const image = new Image()
 
@@ -389,6 +405,7 @@ export default function SkylineScene({
     <section
       className="skyline-map"
       aria-label="Toronto skyline"
+      ref={mapRef}
       onPointerMove={(event) => {
         const bounds = event.currentTarget.getBoundingClientRect()
         const pointerX = (event.clientX - bounds.left) / bounds.width

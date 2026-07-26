@@ -667,3 +667,120 @@
     background: ButtonText;
   }
 }
+
+@media (max-width: 48rem), (max-height: 36rem) and (hover: none) and (pointer: coarse) {
+  .building-panel {
+    overflow: hidden;
+  }
+
+  .building-panel::before {
+    background: rgba(1, 5, 18, 0.5);
+  }
+
+  .building-panel-image {
+    animation: none !important;
+    opacity: 0.3;
+    transform: translate(-50%, -50%) scale(1.01) !important;
+  }
+
+  .building-panel-card,
+  .building-panel-section-about .building-panel-card,
+  .building-panel-section-projects .building-panel-card,
+  .building-panel-section-skills .building-panel-card,
+  .building-panel-section-experience .building-panel-card,
+  .building-panel-section-contact .building-panel-card {
+    bottom: max(0.75rem, env(safe-area-inset-bottom));
+    left: max(0.75rem, env(safe-area-inset-left));
+    max-height: none;
+    min-height: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: 1.25rem;
+    right: max(0.75rem, env(safe-area-inset-right));
+    scrollbar-color: color-mix(in srgb, var(--building-outline-color) 76%, #ffffff)
+      rgba(1, 5, 18, 0.56);
+    scrollbar-width: thin;
+    top: max(0.75rem, env(safe-area-inset-top));
+    width: auto;
+  }
+
+  .building-panel-card-close-button {
+    height: 44px;
+    right: 0.75rem;
+    top: 0.75rem;
+    width: 44px;
+  }
+
+  .building-panel-card h2 {
+    font-size: clamp(2.35rem, 13vw, 3.4rem);
+    max-width: calc(100% - 3.5rem);
+  }
+
+  .building-panel-kicker {
+    font-size: 1.15rem;
+    max-width: calc(100% - 3.5rem);
+  }
+
+  .building-panel-body {
+    font-size: 1.05rem;
+    line-height: 1.35;
+    margin-top: 1.15rem;
+    padding-top: 1rem;
+  }
+
+  .building-panel-cat-button {
+    height: 3.75rem;
+    right: 0.75rem;
+    top: 4rem;
+    width: 3.75rem;
+  }
+
+  .building-panel-education {
+    padding: 0.85rem;
+  }
+
+  .building-panel-education-heading,
+  .building-panel-project-heading,
+  .building-panel-experience-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .building-panel-education-heading span,
+  .building-panel-project-heading span,
+  .building-panel-experience-heading span {
+    text-align: left;
+    white-space: normal;
+  }
+
+  .building-panel-projects,
+  .building-panel-skills,
+  .building-panel-experience,
+  .building-panel-contact-links {
+    margin-top: 1.15rem;
+    padding-top: 1rem;
+  }
+
+  .building-panel-project {
+    padding: 0.85rem;
+  }
+
+  .building-panel-project li,
+  .building-panel-skill-group li {
+    font-size: 1rem;
+  }
+
+  .building-panel-experience-item li {
+    font-size: 1rem;
+    line-height: 1.3;
+  }
+
+  .building-panel-contact-link {
+    flex: 1 1 calc(50% - 0.3rem);
+    font-size: 1.05rem;
+    justify-content: center;
+    min-height: 2.75rem;
+    padding: 0.65rem;
+  }
+}

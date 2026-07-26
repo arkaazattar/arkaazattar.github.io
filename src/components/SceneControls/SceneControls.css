@@ -159,21 +159,54 @@
   cursor: default;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 48rem), (max-height: 36rem) and (hover: none) and (pointer: coarse) {
   .scene-controls {
-    bottom: 1rem;
+    bottom: max(0.5rem, env(safe-area-inset-bottom));
+    gap: 0.55rem;
+    left: max(0.5rem, env(safe-area-inset-left));
+    padding: 0.65rem 0.7rem;
+    right: max(0.5rem, env(safe-area-inset-right));
+    width: auto;
   }
 
   .time-slider-text {
-    font-size: 1rem;
+    column-gap: 0.18rem;
+    font-size: 0.95rem;
+    flex-wrap: wrap;
     justify-content: center;
+    min-height: 2.75rem;
+    row-gap: 0.15rem;
+    white-space: normal;
+  }
+
+  .scene-control-text-button,
+  .date-toggle-button,
+  .date-nav-button,
+  .time-display {
+    min-height: 1.25rem;
+  }
+
+  .date-toggle-button,
+  .time-display {
+    white-space: nowrap;
   }
 
   .date-nav-button {
-    margin: 0 0.08em;
+    font-size: 1em;
+    margin: 0;
+    min-width: 1.25rem;
   }
 
   .scene-control-separator {
-    margin: 0 0.22em;
+    margin: 0 0.08em;
+  }
+
+  .time-slider {
+    height: 9px;
+  }
+
+  .time-slider::-webkit-slider-thumb {
+    height: 1.5rem;
+    width: 1.5rem;
   }
 }
