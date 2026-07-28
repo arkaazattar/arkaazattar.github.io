@@ -139,7 +139,8 @@
   }
 
   .site-shell:has(.building-panel) .quicklinks-bar,
-  .site-shell:has(.building-panel) .mute-button {
+  .site-shell:has(.building-panel) .mute-button,
+  .site-shell:has(.building-panel) .identity-panel {
     visibility: hidden;
   }
 }

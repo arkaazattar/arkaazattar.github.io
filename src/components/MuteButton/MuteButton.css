@@ -69,8 +69,9 @@
   .mute-button {
     bottom: auto;
     height: 46px;
-    left: max(0.5rem, env(safe-area-inset-left));
+    left: auto;
     padding: 4px;
+    right: max(0.5rem, env(safe-area-inset-right));
     top: max(0.5rem, env(safe-area-inset-top));
     width: 46px;
   }

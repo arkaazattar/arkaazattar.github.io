@@ -1,0 +1,164 @@
+.identity-panel {
+  --identity-corner-cut: 10px;
+
+  background-color: rgba(0, 0, 0, 0.28);
+  border: 2px solid color-mix(in srgb, var(--building-outline-color) 76%, #ffffff);
+  clip-path: polygon(
+    var(--identity-corner-cut) 0,
+    calc(100% - var(--identity-corner-cut)) 0,
+    100% var(--identity-corner-cut),
+    100% calc(100% - var(--identity-corner-cut)),
+    calc(100% - var(--identity-corner-cut)) 100%,
+    var(--identity-corner-cut) 100%,
+    0 calc(100% - var(--identity-corner-cut)),
+    0 var(--identity-corner-cut)
+  );
+  color: #f7ffff;
+  font-family: 'Pixel Operator', 'Courier New', Courier, monospace;
+  left: max(2rem, env(safe-area-inset-left));
+  padding: 1rem 1.15rem;
+  position: fixed;
+  top: max(2rem, env(safe-area-inset-top));
+  width: min(30rem, calc(100vw - 8rem));
+  z-index: 6;
+}
+
+.identity-panel__content {
+  position: relative;
+}
+
+.identity-panel__content {
+  align-items: center;
+  display: grid;
+  gap: 0.9rem;
+  grid-template-columns: auto 1fr;
+}
+
+.identity-panel__avatar {
+  align-items: center;
+  background: color-mix(in srgb, var(--building-outline-color) 20%, rgba(2, 13, 32, 0.95));
+  border: 2px solid color-mix(in srgb, var(--building-outline-color) 82%, #ffffff);
+  box-shadow:
+    0 0 14px color-mix(in srgb, var(--building-outline-color) 28%, transparent),
+    inset 0 0 10px color-mix(in srgb, var(--building-outline-color) 16%, transparent);
+  color: var(--building-outline-color);
+  display: grid;
+  font-size: 1.2rem;
+  height: 3.6rem;
+  place-items: center;
+  text-shadow: 0 0 8px currentColor;
+  width: 3.6rem;
+}
+
+.identity-panel__name {
+  color: #ffffff;
+  font-size: clamp(1.9rem, 3.6vw, 3.15rem);
+  font-weight: 700;
+  letter-spacing: 0.025em;
+  line-height: 0.92;
+  margin: 0;
+  text-shadow:
+    3px 3px 0 rgba(34, 246, 255, 0.22),
+    0 0 16px rgba(34, 246, 255, 0.2);
+  text-transform: uppercase;
+}
+
+.identity-panel__role,
+.identity-panel__university,
+.identity-panel__bio {
+  margin: 0;
+}
+
+.identity-panel__role {
+  color: var(--building-outline-color);
+  font-size: clamp(1.1rem, 1.8vw, 1.4rem);
+  letter-spacing: 0.04em;
+  margin-top: 0.85rem;
+}
+
+.identity-panel__university {
+  color: #b7deee;
+  font-size: clamp(0.95rem, 1.5vw, 1.15rem);
+  letter-spacing: 0.03em;
+  margin-top: 0.4rem;
+}
+
+.identity-panel__bio {
+  color: #e2f3f7;
+  font-size: clamp(0.9rem, 1.3vw, 1.05rem);
+  line-height: 1.35;
+  margin-top: 0.75rem;
+  max-width: 34ch;
+}
+
+@media (max-width: 48rem) {
+  .identity-panel {
+    --identity-corner-cut: 9px;
+
+    left: max(0.5rem, env(safe-area-inset-left));
+    padding: 0.75rem 0.85rem 0.9rem;
+    top: max(0.5rem, env(safe-area-inset-top));
+    width: min(25rem, calc(100vw - 4.75rem - env(safe-area-inset-left) - env(safe-area-inset-right)));
+  }
+
+  .identity-panel__content {
+    gap: 0.7rem;
+  }
+
+  .identity-panel__avatar {
+    font-size: 1rem;
+    height: 3rem;
+    width: 3rem;
+  }
+
+  .identity-panel__name {
+    font-size: clamp(1.45rem, 7.3vw, 2.15rem);
+  }
+
+  .identity-panel__role {
+    font-size: 0.94rem;
+    margin-top: 0.5rem;
+  }
+
+  .identity-panel__university {
+    font-size: 0.82rem;
+    margin-top: 0.2rem;
+  }
+
+  .identity-panel__bio {
+    font-size: 0.78rem;
+    margin-top: 0.5rem;
+  }
+}
+
+@media (max-height: 36rem) and (hover: none) and (pointer: coarse) {
+  .identity-panel {
+    left: max(0.5rem, env(safe-area-inset-left));
+    padding: 0.7rem 0.9rem 0.8rem;
+    top: max(0.5rem, env(safe-area-inset-top));
+    width: min(22rem, calc(100vw - 4.75rem));
+  }
+
+  .identity-panel__avatar {
+    height: 2.8rem;
+    width: 2.8rem;
+  }
+
+  .identity-panel__name {
+    font-size: 1.7rem;
+  }
+
+  .identity-panel__role {
+    font-size: 0.9rem;
+    margin-top: 0.35rem;
+  }
+
+  .identity-panel__university {
+    font-size: 0.78rem;
+  }
+
+  .identity-panel__bio {
+    font-size: 0.74rem;
+    line-height: 1.25;
+  }
+}

@@ -6,6 +6,7 @@ import SkylineScene from './components/SkylineScene'
 import StarsOverlay from './components/StarsOverlay'
 import WeatherOverlay from './components/WeatherOverlay'
 import BuildingPanel from './components/BuildingPanel'
+import IdentityPanel from './components/IdentityPanel'
 import MuteButton from './components/MuteButton'
 import {
   DEFAULT_SOLAR_TIMES,
@@ -168,6 +169,7 @@ function App() {
 
   return (
     <main className="site-shell" style={siteStyle}>
+      <IdentityPanel />
       <MuteButton
         muted={audioMuted}
         onClick={() => setAudioMuted((currentMuted) => !currentMuted)}
