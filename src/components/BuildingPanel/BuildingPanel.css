@@ -491,6 +491,10 @@
   font-family: 'Pixel Operator', 'Courier New', Courier, monospace;
 }
 
+.building-panel-experience-item + .building-panel-experience-item {
+  margin-top: 1.5rem;
+}
+
 .building-panel-experience-heading {
   align-items: baseline;
   display: flex;

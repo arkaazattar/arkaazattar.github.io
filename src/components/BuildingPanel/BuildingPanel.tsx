@@ -142,6 +142,15 @@ const panelScenes: Record<string, BuildingPanelScene> = {
     id: 'experience',
     experienceItems: [
       {
+        role: 'Software Developer',
+        organization: 'Obsidian Leadership Development Center',
+        date: 'Sept 2026 - Present',
+        location: 'Remote - Part Time',
+        bullets: [
+          'Migrating legacy WordPress website into a React-based application with reusable components and existing mailing infrastructure.'
+        ],
+      },
+      {
         role: 'Electrical Subteam Member',
         organization: 'Carleton Planetary Robotics Team',
         date: 'Sept 2025 - Apr 2026',
