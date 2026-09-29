@@ -138,7 +138,7 @@ const panelScenes: Record<string, BuildingPanelScene> = {
       },
       {
         label: 'Frameworks',
-        items: ['React', 'Vite', 'Flask', 'Celery', 'WebSockets'],
+        items: ['React', 'Next.js', 'Vue.js', 'Vite', 'FastAPI', 'Flask', 'Celery', 'OpenCV', 'WebSockets'],
       },
       {
         label: 'Tools',
