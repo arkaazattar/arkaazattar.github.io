@@ -100,6 +100,15 @@ const panelScenes: Record<string, BuildingPanelScene> = {
         href: 'https://github.com/arkaazattar/ClashRecruit',
       },
       {
+        title: 'Enlight',
+        kind: 'Hack the North 2026',
+        description:
+          'A real-time face recognition system that detects and identifies multiple people from a live camera feed with persistently enrolled identities.',
+        technologies: ['Python', 'OpenCV', 'FastAPI', 'MongoDB', 'React', 'Gemini'],
+        embedUrl: 'https://www.youtube.com/embed/ftk8_uDHdX8',
+        href: 'https://github.com/arkaazattar/enlight-htn2026',
+      },
+      {
         title: 'CourseTrack',
         kind: 'CTRL-HACK-DEL 2.0 Hackathon',
         description:
