@@ -44,7 +44,6 @@ const quickLinks = [
     label: 'Email',
     iconPath: ASSET_PATHS.icons.email,
     href: 'mailto:arkaazattar@gmail.com',
-    target: '_blank'
   },
   {
     label: 'Resume',
@@ -67,7 +66,8 @@ function QuickLinksBar() {
           key={link.label}
           style={{ '--quicklink-icon': `url(${link.iconPath})` } as CSSProperties}
         >
-          <img src={link.iconPath} alt="" aria-hidden="true" className="quicklink-icon" />
+          <span className="quicklink-icon" aria-hidden="true" />
+          <span className="quicklink-label">{link.label}</span>
         </a>
       ))}
     </nav>
@@ -169,7 +169,10 @@ function App() {
 
   return (
     <main className="site-shell" style={siteStyle}>
-      <IdentityPanel />
+      <header className="site-header">
+        <IdentityPanel />
+        <QuickLinksBar />
+      </header>
       <MuteButton
         muted={audioMuted}
         onClick={() => setAudioMuted((currentMuted) => !currentMuted)}
@@ -207,7 +210,6 @@ function App() {
         weather={weather}
       />
       {season === 'fall' && <LeavesOverlay />}
-      <QuickLinksBar />
       <SceneControls
         mode={mode}
         timeMinutes={timeMinutes}
