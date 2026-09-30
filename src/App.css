@@ -26,24 +26,36 @@
   width: 100%;
 }
 
+.site-header {
+  align-items: flex-start;
+  display: flex;
+  justify-content: space-between;
+  left: 0;
+  padding: max(2rem, env(safe-area-inset-top)) max(2rem, env(safe-area-inset-right)) 0
+    max(2rem, env(safe-area-inset-left));
+  pointer-events: none;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 7;
+}
+
+.site-header > * {
+  pointer-events: auto;
+}
+
 .quicklinks-bar {
   align-items: center;
-  background: color-mix(in srgb, var(--building-outline-color) 30%, transparent);
-  border: 3px solid color-mix(in srgb, var(--building-outline-color) 74%, #ffffff);
-  border-top-left-radius: 3px;
-  border-bottom-left-radius: 3px;
-  border-right: none;
+  background: rgba(0, 0, 0, 0.28);
+  border: 2px solid color-mix(in srgb, var(--building-outline-color) 76%, #ffffff);
+  border-radius: 0.7rem;
   box-shadow:
     0 0 12px color-mix(in srgb, var(--building-outline-color) 36%, transparent),
     inset 0 0 12px color-mix(in srgb, var(--building-outline-color) 16%, transparent);
-  display: grid;
-  gap: 0.45rem;
-  padding: 0.55rem 0.5rem;
-  position: fixed;
-  right: 0;
-  top: 49%;
-  transform: translateY(-50%);
-  z-index: 7;
+  display: flex;
+  flex: 0 0 auto;
+  gap: 0.15rem;
+  padding: 0.5rem 0.55rem;
 }
 
 .quicklink-button {
@@ -51,57 +63,50 @@
   appearance: none;
   background: transparent;
   border: 0;
-  color: black;
-  display: inline-flex;
-  height: 2rem;
-  justify-content: center;
-  padding: 0;
-  position: relative;
-  transition: color 180ms ease;
-  width: 2rem;
+  border-radius: 0.35rem;
+  color: #f2ffff;
   cursor: pointer;
-  animation: quicklink-animation;
-  animation-duration: 0.5s;
+  display: inline-flex;
+  font-family: 'Pixel Operator', 'Courier New', Courier, monospace;
+  font-size: 1rem;
+  gap: 0.45rem;
+  justify-content: center;
+  min-height: 2.2rem;
+  padding: 0.2rem 0.5rem;
+  position: relative;
+  text-decoration: none;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.22);
+  transition:
+    background-color 180ms ease,
+    color 180ms ease,
+    transform 120ms ease;
+  white-space: nowrap;
 }
 
 .quicklink-button:hover {
+  background: color-mix(in srgb, var(--building-outline-color) 12%, transparent);
   color: var(--building-outline-color);
 }
 
-.quicklink-button svg,
-.quicklink-button img {
-  display: block;
-  height: 1.85rem;
-  width: 1.85rem;
+.quicklink-button:active {
+  transform: translateY(1px);
 }
 
-.quicklink-button svg {
-  fill: currentColor;
-}
-
-.quicklink-button img {
-  filter: none;
-  opacity: 0;
-}
-
-.quicklink-button::before {
+.quicklink-icon {
   background: currentColor;
-  content: '';
   display: block;
-  height: 1.85rem;
-  inset: 50% auto auto 50%;
-  -webkit-mask-position: center;
+  flex: 0 0 1.55rem;
+  height: 1.55rem;
   -webkit-mask-image: var(--quicklink-icon);
-  mask-position: center;
-  mask-image: var(--quicklink-icon);
+  -webkit-mask-position: center;
   -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
   -webkit-mask-size: contain;
+  mask-image: var(--quicklink-icon);
+  mask-position: center;
+  mask-repeat: no-repeat;
   mask-size: contain;
-  position: absolute;
-  transform: translate(-50%, -50%);
   transition: background-color 180ms ease;
-  width: 1.85rem;
+  width: 1.55rem;
 }
 
 .quicklink-button:focus-visible {
@@ -109,38 +114,51 @@
   outline-offset: 3px;
 }
 
+.quicklink-label {
+  line-height: 1;
+}
+
+@media (max-width: 64rem) {
+  .site-header {
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+}
+
 @media (max-width: 48rem), (max-height: 36rem) and (hover: none) and (pointer: coarse) {
   .site-shell {
     min-height: 100svh;
   }
 
+  .site-header {
+    gap: 0.5rem;
+    padding: max(0.5rem, env(safe-area-inset-top)) max(0.5rem, env(safe-area-inset-right)) 0
+      max(0.5rem, env(safe-area-inset-left));
+  }
+
   .quicklinks-bar {
-    border: 2px solid color-mix(in srgb, var(--building-outline-color) 74%, #ffffff);
-    border-right: 0;
-    gap: 0.35rem;
-    padding: 0.45rem 0.35rem;
-    right: env(safe-area-inset-right);
+    border: 2px solid color-mix(in srgb, var(--building-outline-color) 76%, #ffffff);
+    border-radius: 0.55rem;
+    gap: 0;
+    max-width: 100%;
+    padding: 0.3rem 0.25rem;
   }
 
   .quicklink-button {
-    height: 2.25rem;
-    width: 2.25rem;
+    font-size: clamp(0.72rem, 2.8vw, 0.9rem);
+    gap: 0.25rem;
+    min-height: 1.9rem;
+    padding: 0.15rem 0.2rem;
   }
 
-  .quicklink-button svg,
-  .quicklink-button img {
-    height: 1.75rem;
-    width: 1.75rem;
+  .quicklink-icon {
+    flex-basis: clamp(1.05rem, 4vw, 1.35rem);
+    height: clamp(1.05rem, 4vw, 1.35rem);
+    width: clamp(1.05rem, 4vw, 1.35rem);
   }
 
-  .quicklink-button::before {
-    height: 1.75rem;
-    width: 1.75rem;
-  }
-
-  .site-shell:has(.building-panel) .quicklinks-bar,
-  .site-shell:has(.building-panel) .mute-button,
-  .site-shell:has(.building-panel) .identity-panel {
+  .site-shell:has(.building-panel) .site-header,
+  .site-shell:has(.building-panel) .mute-button {
     visibility: hidden;
   }
 }
