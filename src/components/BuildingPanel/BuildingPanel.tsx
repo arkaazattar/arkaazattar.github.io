@@ -152,7 +152,7 @@ const panelScenes: Record<string, BuildingPanelScene> = {
     experienceItems: [
       {
         role: 'Software Developer',
-        organization: 'Obsidian Leadership Development Center',
+        organization: 'Obsidian Leadership Development Centre',
         date: 'Sept 2026 - Present',
         location: 'Remote - Part Time',
         bullets: [
