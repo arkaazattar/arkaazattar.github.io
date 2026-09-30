@@ -32,8 +32,7 @@ type BuildingPanelScene = {
 type ContactLink = {
   label: string
   href: string
-  iconPath?: string
-  icon?: 'instagram'
+  iconPath: string
 }
 
 type ContactIconStyle = CSSProperties & {
@@ -190,11 +189,6 @@ const panelScenes: Record<string, BuildingPanelScene> = {
         label: 'Email',
         href: 'mailto:arkaazattar@gmail.com',
         iconPath: ASSET_PATHS.icons.email,
-      },
-      {
-        label: 'Instagram',
-        href: 'https://instagram.com/arkaazattar',
-        icon: 'instagram',
       },
     ],
     id: 'contact',
@@ -396,15 +390,11 @@ function BuildingPanelSceneContent({
                 rel={link.href.startsWith('http') ? 'noopener noreferrer' : undefined}
                 key={link.label}
               >
-                {link.iconPath ? (
-                  <span
-                    className="building-panel-contact-link-icon"
-                    style={{ '--contact-icon': `url(${link.iconPath})` } as ContactIconStyle}
-                    aria-hidden="true"
-                  />
-                ) : (
-                  <InstagramIcon />
-                )}
+                <span
+                  className="building-panel-contact-link-icon"
+                  style={{ '--contact-icon': `url(${link.iconPath})` } as ContactIconStyle}
+                  aria-hidden="true"
+                />
                 <span>{link.label}</span>
               </a>
             ))}
@@ -412,15 +402,5 @@ function BuildingPanelSceneContent({
         )}
       </div>
     </section>
-  )
-}
-
-function InstagramIcon() {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-      <rect x="4" y="4" width="16" height="16" rx="4" />
-      <circle cx="12" cy="12" r="3.4" />
-      <circle cx="17" cy="7" r="1.2" />
-    </svg>
   )
 }

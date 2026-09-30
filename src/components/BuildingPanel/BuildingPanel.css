@@ -572,8 +572,7 @@
     color 170ms ease;
 }
 
-.building-panel-contact-link-icon,
-.building-panel-contact-link svg {
+.building-panel-contact-link-icon {
   flex: 0 0 auto;
   height: 1.1rem;
   width: 1.1rem;
@@ -585,13 +584,6 @@
   mask: var(--contact-icon) center / contain no-repeat;
 }
 
-.building-panel-contact-link svg {
-  fill: none;
-  stroke: currentColor;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-width: 2;
-}
 
 .building-panel-contact-link:hover {
   background: color-mix(in srgb, var(--building-outline-color) 16%, rgba(1, 5, 18, 0.42));
