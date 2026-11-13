@@ -139,7 +139,7 @@
 
 .skyline-lighting {
   background: var(--scene-lighting-color);
-  mix-blend-mode: color-burn;
+  /* Use a translucent tint to avoid color-burn compositing artifacts on iOS. */
   opacity: var(--scene-lighting-opacity);
   pointer-events: none;
   transition:
