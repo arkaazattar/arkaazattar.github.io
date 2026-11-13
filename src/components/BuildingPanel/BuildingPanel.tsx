@@ -150,6 +150,18 @@ const panelScenes: Record<string, BuildingPanelScene> = {
     id: 'experience',
     experienceItems: [
       {
+        role: 'AI Automation Developer Intern',
+        organization: 'Spotwork',
+        date: 'Oct 2026 - Present',
+        location: 'Toronto, ON - Remote',
+        bullets: [
+          'Developed a LangGraph-based AI agent within a stateless FastAPI service to automate industrial workforce attendance, including worker check-ins, follow-ups, response evaluation, supervisor alerts, and job-site checkouts.',
+          'Designed a modular LLM integration layer using Python protocols and dependency injection to support switching model providers and independently testing agent orchestration.',
+          'Implemented strict JSON response validation, permitted-action enforcement, and fail-closed error handling to prevent malformed or unauthorized agent actions.',
+          'Built an automated pytest suite covering agent routing, LLM provider behavior, response validation, and failure scenarios.',
+        ],
+      },
+      {
         role: 'Software Developer',
         organization: 'Obsidian Leadership Development Centre',
         date: 'Sept 2026 - Present',
@@ -361,7 +373,7 @@ function BuildingPanelSceneContent({
           </div>
         )}
         {scene.experienceItems && (
-          <div className="building-panel-experience" aria-label="Club experience">
+          <div className="building-panel-experience" aria-label="Work and team experience">
             {scene.experienceItems.map((item) => (
               <article className="building-panel-experience-item" key={item.organization}>
                 <div className="building-panel-experience-heading">
@@ -371,11 +383,7 @@ function BuildingPanelSceneContent({
                 <p className="building-panel-experience-meta">
                   {item.organization} / {item.location}
                 </p>
-                <ul>
-                  {item.bullets.map((bullet) => (
-                    <li key={bullet}>{bullet}</li>
-                  ))}
-                </ul>
+                {/* Bullets are temporarily hidden; their content is retained in panelScenes. */}
               </article>
             ))}
           </div>

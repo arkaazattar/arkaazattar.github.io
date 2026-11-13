@@ -256,6 +256,13 @@
   background: rgba(1, 5, 18, 0.56);
 }
 
+.building-panel-section-experience .building-panel-card {
+  max-height: calc(89svh - 1rem);
+  overflow-y: auto;
+  scrollbar-color: color-mix(in srgb, var(--building-outline-color) 76%, #ffffff) rgba(1, 5, 18, 0.56);
+  scrollbar-width: thin;
+}
+
 .building-panel-section-skills .building-panel-card {
   right: 10vw;
   top: 14vh;
